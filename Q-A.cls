@@ -142,11 +142,15 @@
 \setlist [ QA-entry ] { font = \normalfont\sffamily, leftmargin = \l_QA_list_indentation_dim, labelsep = \l_QA_list_labelsep_dim, labelwidth=!, parsep=\parskip }
 \renewcommand{\descriptionlabel}[1]{#1}
 
-\dim_new:N \l_QA_labelsep_dim
-\dim_set:Nn \l_QA_labelsep_dim { \labelsep }
-\setlist [ 2 ] { labelsep = \l_QA_labelsep_dim, labelwidth = !}
-
-\setlist[itemize]{leftmargin=*,label=\textcolor{.!27!paper}{\raisebox{.12em}{\scriptsize$\bullet$}}}
+% The following line is mainly for the scroll mode
+\setlist[itemize]{leftmargin=\maxof{\parindent}{1.5em},label=\textcolor{.!27!paper}{\raisebox{.12em}{\scriptsize$\bullet$}}}
+\AddLanguageSetting
+  {
+    \setlist[itemize,1]{leftmargin=\maxof{\parindent}{1.5em},label=\textcolor{.!27!paper}{\raisebox{.12em}{\scriptsize$\bullet$}}}
+    \setlist[itemize,2]{leftmargin=*,label=\textcolor{.!27!paper}{\rule[.2\baselineskip]{.55em}{.75pt}}}
+    \setlist[itemize,3]{leftmargin=*,label=\textcolor{.!27!paper}{$\circ$}}
+    \setlist[itemize,4]{leftmargin=*,label=\textcolor{.!27!paper}{$\ast$}}
+  }
 
 \setlist[enumerate,1]{label = \color{.!55!paper}\arabic*.,
     ref = \color{.!55!paper}\arabic*,
@@ -155,6 +159,10 @@
     ref = \color{.!55!paper}\arabic{enumi}.\roman*}
 \setlist[enumerate,3]{label = \color{.!55!paper}\emph{\alph*}.,
     ref = \color{.!55!paper}\arabic{enumi}.\roman{enumii}.\emph{\alph*}}
+
+\dim_new:N \l_QA_labelsep_dim
+\dim_set:Nn \l_QA_labelsep_dim { \labelsep }
+\setlist [ 2 ] { labelsep = \l_QA_labelsep_dim, labelwidth = !}
 
 \PassOptionsToPackage { many } { tcolorbox }
 \RequirePackage { tcolorbox }
@@ -317,6 +325,24 @@
     \end{enumerate}
   }
 
+\NewDocumentCommand \QAnote { m }
+  {
+    \dim_set:Nn \l_tmpa_dim { \labelsep }
+    \begin{tcolorbox}[enhanced~jigsaw, breakable,
+      frame~hidden,
+      interior~hidden,
+      boxrule=0pt,
+      grow~to~left~by=-.75mm,
+      before~skip=1mm,
+      after~skip=1mm,
+      top=-.75mm, bottom=-.75mm, left=.33em, right=-1mm,
+      borderline~west={.2em}{0pt}{QA-N-text!17!QA-N-back},
+    ]
+        #1
+    \end{tcolorbox}
+    \dim_gset:Nn \labelsep { \l_tmpa_dim }
+  }
+
 \newtcbox \QAcodebox
   {
     tcbox~raise~base,
@@ -442,16 +468,56 @@
     \tl_set:cn { l_QA_logo_code_ #1 _tl } { #2 }
   }
 % Set default logo code
-\SetLogoCode[Q]{\textbf{Q\,:}}
-\SetLogoCode[A]{\textbf{A\,:}}
+\SetLogoCode[Q]{\textbf{\l_QA_label_Q_tl}}
+\SetLogoCode[A]{\textbf{\l_QA_label_R_tl}}
+\projlib_langauge_define_multilingual_text:Nn \l_QA_label_Q_tl
+  {
+    , EN = Q\,:
+    , FR = Q:
+    , DE = F\,:
+    , IT = D\,:
+    , PT = P\,:
+    , BR = P\,:
+    , ES = P\,:
+    , CN = Q\,:
+    , TC = Q\,:
+    , JP = Q\,:
+    , RU = B\,:
+  }
+\projlib_langauge_define_multilingual_text:Nn \l_QA_label_R_tl
+  {
+    , EN = A\,:
+    , FR = R:
+    , DE = A\,:
+    , IT = R\,:
+    , PT = R\,:
+    , BR = R\,:
+    , ES = R\,:
+    , CN = A\,:
+    , TC = A\,:
+    , JP = A\,:
+    , RU = O\,:
+  }
 
-\prop_new:N \l__QA_prefix_type_prop
+\prop_new:N \g__QA_prefix_type_prop
 \NewDocumentCommand \QASetTypePrefix { m m }
   {
     \clist_map_inline:nn { #2 }
       {
-        \prop_put:Nnn \l__QA_prefix_type_prop { ##1 } { #1 }
+        \prop_gput_if_new:Nnn \g__QA_prefix_type_prop { ##1 } { #1 }
       }
+  }
+\NewDocumentCommand \QAAddTypePrefix { m m }
+  {
+    \prop_gput_if_new:Nnn \g__QA_prefix_type_prop { #2 } { #1 }
+  }
+\NewDocumentCommand \QARemovePrefix { m }
+  {
+    \prop_gremove:Nn \g__QA_prefix_type_prop { #1 }
+  }
+\NewDocumentCommand \QARemoveAllPrefix { }
+  {
+    \prop_gclear:N \g__QA_prefix_type_prop
   }
 
 \QASetTypePrefix { void } { VOID }
@@ -461,6 +527,84 @@
 \QASetTypePrefix { Q } { Q: , ? , ？ }
 \QASetTypePrefix { A } { A: , : , ： }
 \QASetTypePrefix { N } { N: , " , “ , ” , 「 }
+
+\AddLanguageSetting [ EN ]
+  {
+    \QARemoveAllPrefix
+    \QASetTypePrefix { Q } { Q: , ? , ？ }
+    \QASetTypePrefix { A } { A: , : , ： }
+    \QASetTypePrefix { N } { N: , " , “ , ” , 「 }
+  }
+\AddLanguageSetting [ FR ]
+  {
+    \QARemoveAllPrefix
+    \QASetTypePrefix { Q } { Q: , ? , ？ }
+    \QASetTypePrefix { A } { R: , : , ： }
+    \QASetTypePrefix { N } { N: , " , “ , ” , 「 }
+  }
+\AddLanguageSetting [ DE ]
+  {
+    \QARemoveAllPrefix
+    \QASetTypePrefix { Q } { F: , ? , ？ }
+    \QASetTypePrefix { A } { A: , : , ： }
+    \QASetTypePrefix { N } { E: , " , “ , ” , 「 }
+  }
+\AddLanguageSetting [ IT ]
+  {
+    \QARemoveAllPrefix
+    \QASetTypePrefix { Q } { D: , ? , ？ }
+    \QASetTypePrefix { A } { R: , : , ： }
+    \QASetTypePrefix { N } { N: , " , “ , ” , 「 }
+  }
+\AddLanguageSetting [ PT ]
+  {
+    \QARemoveAllPrefix
+    \QASetTypePrefix { Q } { P: , ? , ？ }
+    \QASetTypePrefix { A } { R: , : , ： }
+    \QASetTypePrefix { N } { N: , " , “ , ” , 「 }
+  }
+\AddLanguageSetting [ BR ]
+  {
+    \QARemoveAllPrefix
+    \QASetTypePrefix { Q } { P: , ? , ？ }
+    \QASetTypePrefix { A } { R: , : , ： }
+    \QASetTypePrefix { N } { N: , " , “ , ” , 「 }
+  }
+\AddLanguageSetting [ ES ]
+  {
+    \QARemoveAllPrefix
+    \QASetTypePrefix { Q } { P: , ? , ？ }
+    \QASetTypePrefix { A } { R: , : , ： }
+    \QASetTypePrefix { N } { N: , " , “ , ” , 「 }
+  }
+\AddLanguageSetting [ CN ]
+  {
+    \QARemoveAllPrefix
+    \QASetTypePrefix { Q } { 问： , Q: , ? , ？ }
+    \QASetTypePrefix { A } { 答： , A: , : , ： }
+    \QASetTypePrefix { N } { 注： , N: , " , “ , ” , 「 }
+  }
+\AddLanguageSetting [ TC ]
+  {
+    \QARemoveAllPrefix
+    \QASetTypePrefix { Q } { 問： , Q: , ? , ？ }
+    \QASetTypePrefix { A } { 答： , A: , : , ： }
+    \QASetTypePrefix { N } { 註： , N: , " , “ , ” , 「 }
+  }
+\AddLanguageSetting [ JP ]
+  {
+    \QARemoveAllPrefix
+    \QASetTypePrefix { Q } { Q: , ? , ？ }
+    \QASetTypePrefix { A } { A: , : , ： }
+    \QASetTypePrefix { N } { N: , " , 「 }
+  }
+\AddLanguageSetting [ RU ]
+  {
+    \QARemoveAllPrefix
+    \QASetTypePrefix { Q } { B: , ? }
+    \QASetTypePrefix { A } { O: , : }
+    \QASetTypePrefix { N } { P: , " }
+  }
 
 \tl_new:N \l__QA_current_type_tl
 \tl_set:Nn \l__QA_current_type_tl { void }
@@ -546,6 +690,14 @@
           { \`\` }
           \l_QA_tmp_tl
 
+        \regex_replace_once:nnN
+          { >>> \ *? (.*) }
+          { \c{QAnote} {\1} }
+          \l_QA_tmp_tl
+        \regex_replace_all:nnN
+          { \ *? >>> \ *? }
+          { }
+          \l_QA_tmp_tl
 
         \bool_set_false:N \l_QA_regex_no_more_match_bool
         \bool_do_until:nn \l_QA_regex_no_more_match_bool
@@ -573,7 +725,7 @@
           }
         \regex_replace_once:nnN { ❄️ (.*) ❄️ } { ❄️ \1 } \l_QA_tmp_tl
 
-        \prop_map_inline:Nn \l__QA_prefix_type_prop
+        \prop_map_inline:Nn \g__QA_prefix_type_prop
           {
             \regex_match:nVTF { ❄️ \ *? ####1 } \l_QA_tmp_tl
               {% start of a new type
@@ -681,7 +833,7 @@
       marginparwidth=.75in,
       footnotesep=2em plus 2pt minus 2pt,
     }
-    \hook_gput_code:nnn { begindocument } { QA }
+    \hook_gput_code:nnn { begindocument/end } { QA }
       {
         \begin { QA }
       }

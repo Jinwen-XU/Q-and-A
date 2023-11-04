@@ -86,9 +86,20 @@
 
   [Questions (Q), Answers (A), and Narrations (N)]
   \begin{itemize}
-    \item A question begins with the prefix `Q:` or `?` (or `？`).
-    \item An answer begins with the prefix `A:` or `:` (or `：`).
-    \item A narration begins with the prefix `N:` or `"` (or `“`, `”` or `「`).
+    \item A question begins with the prefix `Q:` or `?`.
+    \item An answer begins with the prefix `A:` or `:`.
+    \item A narration begins with the prefix `N:` or `"`.
+  \end{itemize}
+  >>> Note that this depends on the current language. The prefixes `?`, `:` and `"` being universal, yet~—
+  \begin{itemize}
+    \item for French, it is Q\&R\&N, thus the alphabetical prefixes become `Q:`, `R:` and `N:`;
+    \item for German, it is F\&A\&E, thus the alphabetical prefixes become `F:`, `A:` and `E:`;
+    \item for Italian, it is D\&R\&N, thus the alphabetical prefixes become `D:`, `R:` and `N:`;
+    \item for Portuguese and Brazilian, it is P\&R\&N, thus the alphabetical prefixes become `P:`, `R:` and `N:`;
+    \item for Russian, it is B\&O\&P, thus the alphabetical prefixes become `B:`, `O:` and `P:`;
+    \item for Spanish, it is P\&R\&N, thus the alphabetical prefixes become `P:`, `R:` and `N:`;
+    \item for simplified Chinese, it is also possible to use the prefix `问：` for questions, `答：` for answers, and `注：` for narrations; similarly for traditional Chinese;
+    \item for Chinese or Japanese, it is also possible to use the prefix `？` for questions, `：` for answers, and `“`, `”` or `「` for narrations.
   \end{itemize}
 
   [Emphasize and Bold]
@@ -156,7 +167,9 @@
     \item Use `\backslash QASetTypePrefix\{A\}\{\meta{identifiers}\}` to set the identifiers for answers.
     \item Use `\backslash QASetTypePrefix\{N\}\{\meta{identifiers}\}` to set the identifiers for narrations.
   \end{itemize}
-  Here, \meta{identifier} is a comma list of your specified identifiers. For example, the default identifier for narrations is preset via `\backslash QASetTypePrefix\{N\}\{N:,",“,”,「\}`. Note that, due to its implementation, the identifier cannot contain comma `,` in it.
+  Here, \meta{identifier} is a comma list of your specified identifiers. For example, the default identifier for narrations is preset via `\backslash QASetTypePrefix\{N\}\{N:,",“,”,「\}`.
+  \QAnote{Note that, due to its implementation, the identifier cannot contain comma `,` in it. If you wish to use an identifier that contains a comma, you may use `\backslash QAAddTypePrefix` instead, which only adds *one* identifier per use.}
+  \QAnote{Note also that, the identifiers are *reset* upon changing of language. Thus, you need to put your setting into the corresponding language configuration, for example, via `\backslash AddLanguageSetting[\meta{language name}]\{\meta{settings}\}`}
 
   [Changing labels]
   You may also change the labels. For example, from the text \textquote{Q:} to a logo icon. This can be done via the use of `\backslash SetLogoCode` in the preamble of your document.
@@ -164,7 +177,8 @@
     \item Use `\backslash SetLogoCode\{Q\}\{\meta{logo code}\}` to set the labels for questions.
     \item Use `\backslash SetLogoCode\{A\}\{\meta{logo code}\}` to set the labels for answers.
   \end{itemize}
-  Here, \meta{logo code} is the actual code for displaying the corresponding label. For example, the default label for questions is preset via `\backslash SetLogoCode\{Q\}\{\textbackslash textbf\{Q\textbackslash,:\}\}`. In the demo document, you can find an example on how to use this command to specify a logo for each role in the conversation.
+  Here, \meta{logo code} is the actual code for displaying the corresponding label. For example, the default label for questions is preset via `\backslash SetLogoCode\{Q\}\{\textbackslash textbf\{Q\textbackslash,:\}\}`.
+  >>> In the demo document, you can find an example on how to use this command to specify a logo for each role in the conversation.
 
 
 ##+ {Known Issues}
@@ -175,19 +189,26 @@
 :
   Unfortunately, yes `:(`.
 
-  Currently, the code highlight is done by the package `listings`. Due to its own limitations, the result is still far from satisfactory. Using `minted` instead could improve the situation, but this would require `-shell-escape` and some external tweaking, thus it would still take some effort to make it work with the current document class.
+  Below is a list of known issues:
+
+  \begin{itemize}
+    \item Currently, the code highlight is done by the package `listings`. Due to its own limitations, the result is still far from satisfactory. Using `minted` instead could improve the situation, but this would require `-shell-escape` and some external tweaking, thus it would still take some effort to make it work with the current document class.
+    \item Due to the current implementation, though it is already possible to automatically adopt the identifiers and labels for supported languages, you still need to use the identifiers `Q`, `A` and `N` when setting them.
+    \item Since the text is in fact already put into a list, the level of lists might be slightly messed up, which could sometimes lead to wrong spacing.
+  \end{itemize}
 
 
 ##+ {Get Support}
 
-VOID
-\bigskip
+?
+  What should I do if I encounter any problem?
 
-If you run into any issues or have ideas for improvement, feel free to discuss on:
-\begin{center}
-    \url{https://github.com/Jinwen-XU/Q-A/issues}
-\end{center}
-or email me via \href{mailto:ProjLib@outlook.com}{\texttt{ProjLib@outlook.com}}.
+:
+  If you run into any issues or have ideas for improvement, feel free to discuss on:
+  \begin{center}
+      \url{https://github.com/Jinwen-XU/Q-A/issues}
+  \end{center}
+  or email me via \href{mailto:ProjLib@outlook.com}{\texttt{ProjLib@outlook.com}}.
 
 
 \vspace{3\baselineskip}
