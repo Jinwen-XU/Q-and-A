@@ -516,31 +516,31 @@
 \SetLogoCode[A]{\textbf{\l_QA_label_R_tl}}
 \projlib_langauge_define_multilingual_text:Nn \l_QA_label_Q_tl
   {
-    , EN = Q\,:
-    , FR = Q:
-    , DE = F\,:
-    , IT = D\,:
-    , PT = P\,:
-    , BR = P\,:
-    , ES = P\,:
-    , CN = Q\,:
-    , TC = Q\,:
-    , JP = Q\,:
-    , RU = B\,:
+    , EN = { Q\,: }
+    , FR = { Q:   }
+    , DE = { F\,: }
+    , IT = { D\,: }
+    , PT = { P\,: }
+    , BR = { P\,: }
+    , ES = { P\,: }
+    , CN = { Q\,: }
+    , TC = { Q\,: }
+    , JP = { Q\,: }
+    , RU = { B\,: }
   }
 \projlib_langauge_define_multilingual_text:Nn \l_QA_label_R_tl
   {
-    , EN = A\,:
-    , FR = R:
-    , DE = A\,:
-    , IT = R\,:
-    , PT = R\,:
-    , BR = R\,:
-    , ES = R\,:
-    , CN = A\,:
-    , TC = A\,:
-    , JP = A\,:
-    , RU = O\,:
+    , EN = { A\,: }
+    , FR = { R:   }
+    , DE = { A\,: }
+    , IT = { R\,: }
+    , PT = { R\,: }
+    , BR = { R\,: }
+    , ES = { R\,: }
+    , CN = { A\,: }
+    , TC = { A\,: }
+    , JP = { A\,: }
+    , RU = { O\,: }
   }
 
 \prop_new:N \g__QA_prefix_type_prop
@@ -564,7 +564,7 @@
     \prop_gclear:N \g__QA_prefix_type_prop
   }
 
-\QASetTypePrefix { void } { VOID }
+% \QASetTypePrefix { void } { VOID }
 % \QASetTypePrefix { Q } { Q: , ? }
 % \QASetTypePrefix { A } { A: , : }
 % \QASetTypePrefix { N } { N: , " }
@@ -762,7 +762,6 @@
               {% start of a new type
                 % Put the current stored content into output stream
                 \__QA_put_current_content:n { #1 }
-                \tl_gset:Nn \g_QA_current_content_tl {}
                 % Set the new type
                 \tl_set:Nn \l__QA_current_type_tl { ####2 }
                 \regex_replace_once:nnN
@@ -775,7 +774,6 @@
                   {% Things that should be put into separate group
                     % Put the current stored content into output stream
                     \__QA_put_current_content:n { #1 }
-                    \tl_gset:Nn \g_QA_current_content_tl {}
                     % Directly put the current line into the output stream
                     \regex_replace_all:nnN { ⚛ } { } \l_QA_tmp_tl
                     \regex_replace_once:nnN { ❄️ } { } \l_QA_tmp_tl
@@ -861,7 +859,6 @@
           }
       }
     \__QA_put_current_content:n { #1 }
-    \tl_gclear:N \g_QA_current_content_tl
   }
 
 \box_new:N \l__QA_tmp_box
@@ -873,6 +870,7 @@
         \tl_gput_right:No #1 { \g_QA_current_content_tl }
         \tl_gput_right:Ne #1 { \exp_not:N \end { QA_\l__QA_current_type_tl } }
       }
+    \tl_gclear:N \g_QA_current_content_tl
   }
 
 \bool_if:NTF \l__QA_scroll_bool
