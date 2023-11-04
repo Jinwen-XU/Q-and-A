@@ -16,11 +16,6 @@
 
 
 \newcommand{\meta}[1]{$\langle${\normalfont\itshape#1}$\rangle$}
-\def\textcolon{:}
-\def\texteqsign{=}
-\def\textbacktick{`}
-\def\textast{*}
-\def\textsharp{\#}
 
 
 \begin{document}
@@ -104,14 +99,23 @@
 
   [Emphasize and Bold]
   \begin{itemize}
-    \item Use `\textast\meta{text}\textast` to emphasis `\meta{text}`.
-    \item Use `\textast\textast\meta{text}\textast\textast` to make `\meta{text}` into boldface.
-    \item Use `\textast\textast\textast\meta{text}\textast\textast\textast` to combine the previous effects.
+    \item Use `\textasterisk\meta{text}\textasterisk` to emphasis `\meta{text}`.
+    \item Use `\textasterisk\textasterisk\meta{text}\textasterisk\textasterisk` to make `\meta{text}` into boldface.
+    \item Use `\textasterisk\textasterisk\textasterisk\meta{text}\textasterisk\textasterisk\textasterisk` to combine the previous effects.
   \end{itemize}
 
-  [Emphasized Enumeration]
-  An emphasized enumeration, like the current line, is marked by `[\meta{text}]` at the beginning, where `\meta{text}` is the text to be emphasized.
-  >>> If you wish to restart the numbering from \( 1 \), write an asterisk after the final bracket: `[\meta{text}]\textast`.
+  [Enumerate and Itemize]
+    [* Emphasized version]
+    \begin{itemize}
+      \item An emphasized `enumerate` is marked by `[\meta{text}]` *at the beginning*, where `\meta{text}` is the text to be emphasized. The numbering is reset at the end of each answer.
+      \QAnote{If you wish to restart the numbering from \( 1 \), write an asterisk after the final bracket: `[\meta{text}]\textasterisk`.}
+      \item An emphasized `itemize` is marked by `[\textasterisk\meta{text}]`, where `\meta{text}` is the text to be emphasized.
+    \end{itemize}
+    [* Normal version]
+    \begin{itemize}
+      \item When `\meta{text}` is empty, you get the usual appearance of `enumerate` or `itemize`.
+    \end{itemize}
+    \QAnote{With this method of writing, each `enumerate` must be put into a separate paragraph, and `itemize` cannot be nested. The usual `enumerate` and `itemize` environments would still be useful if you need nested lists.}
 
   [Sections]
   \begin{itemize}
@@ -149,7 +153,15 @@
     \item An emphasized enumeration should also begin in a new paragraph.
     \item Likewise, a `section`/`subsection`/`subsubsection` should be placed in a separate paragraph.
     \item Input or inclusion of files should also be operated in a separate paragraph.
-    \item For emphasizing and bolding the text, it would be necessary to separate the asterisks with~`\{\}` in some special cases: `\textast\textast like\textast\textast\{\}\textast\textast\textast this\textast\textast\textast\{\}\textast one\textast`.
+    \item For emphasizing and bolding the text, it would be necessary to separate the asterisks with~`\{\}` in some special cases: `\textasterisk\textasterisk like\textasterisk\textasterisk\{\}\textasterisk\textasterisk\textasterisk this\textasterisk\textasterisk\textasterisk\{\}\textasterisk one\textasterisk`.
+    \item Due to the recognition of the syntax, you cannot directly use characters like `\textasterisk` as usual, especially in math mode. You should consider using an alternative macro, such as `\backslash ast` for `\textasterisk` in math mode, or define a command version of the character in the preamble, such as `\backslash textasterisk` for `\textasterisk`. A list of predefined commands are:
+    \begin{itemize}
+      \item `\backslash textasterisk` for `\textasterisk`;
+      \item `\backslash textbacktick` for `\textbacktick`;
+      \item `\backslash textcolon` for `\textcolon`;
+      \item `\backslash texteqsign` for `\texteqsign`;
+      \item `\backslash textsharp` for `\textsharp`.
+    \end{itemize}
   \end{itemize}
 
 
@@ -194,6 +206,7 @@
 
   \begin{itemize}
     \item Currently, the code highlight is done by the package `listings`. Due to its own limitations, the result is still far from satisfactory. Using `minted` instead could improve the situation, but this would require `-shell-escape` and some external tweaking, thus it would still take some effort to make it work with the current document class.
+    \item The code block containing long piece of code usually won't properly break across the page (which is essentially why this documentation and the demo documents enabled the `scroll` mode).
     \item Due to the current implementation, though it is already possible to automatically adopt the identifiers and labels for supported languages, you still need to use the identifiers `Q`, `A` and `N` when setting them.
     \item Since the text is in fact already put into a list, the level of lists might be slightly messed up, which could sometimes lead to wrong spacing.
   \end{itemize}

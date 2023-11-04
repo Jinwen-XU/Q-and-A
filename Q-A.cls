@@ -318,17 +318,53 @@
   {
     \textcolor{emph-text}{\textbf{ #1 }}
   }
+
+\bool_new:N \l__QA_inside_list_bool
+\bool_set_false:N \l__QA_inside_list_bool
+\hook_gput_code:nnn { env/enumerate/begin } { QA }
+  { \bool_set_true:N \l__QA_inside_list_bool }
+\hook_gput_code:nnn { env/itemize/begin } { QA }
+  { \bool_set_true:N \l__QA_inside_list_bool }
+\NewDocumentCommand \QAitem { m m }
+  {
+    \tl_if_blank:nTF { #1 }
+      {
+        \begin{itemize}
+          \item #2
+        \end{itemize}
+      }
+      {
+        \bool_if:NTF \l__QA_inside_list_bool
+          {
+            \begin{itemize}
+              \item \QAemph{ #1 : } ~ \ignorespaces #2
+            \end{itemize}
+          }
+          {
+            \begin{itemize}[leftmargin=\l_QA_item_indentation_dim, labelsep=\l_QA_labelsep_dim, labelwidth=1em]
+              \item \QAemph{ #1 : } ~ \ignorespaces #2
+            \end{itemize}
+          }
+      }
+  }
 \NewDocumentCommand \QAenum { s m m }
   {
+    \tl_if_blank:nTF { #1 }
+      {
+        \tl_set:Nn \l_tmpa_tl { }
+      }
+      {
+        \tl_set:Nn \l_tmpa_tl { \QAemph{ #2 : } ~ }
+      }
     \bool_if:NTF #1
       {
         \begin{enumerate}
-          \item \QAemph{ #2 : } ~ \ignorespaces #3
+          \item \l_tmpa_tl \ignorespaces #3
         \end{enumerate}
       }
       {
         \begin{enumerate}[resume]
-          \item \QAemph{ #2 : } ~ \ignorespaces #3
+          \item \l_tmpa_tl \ignorespaces #3
         \end{enumerate}
       }
   }
@@ -673,19 +709,6 @@
           \l_QA_tmp_tl
 
         \regex_replace_all:nnN
-          { \*\*\* (.*?) \*\*\* }
-          { \c{textbf} { \c{emph} {\1} } }
-          \l_QA_tmp_tl
-        \regex_replace_all:nnN
-          { \*\* (.*?) \*\* }
-          { \c{textbf} {\1} }
-          \l_QA_tmp_tl
-        \regex_replace_all:nnN
-          { \* (.*?) \* }
-          { \c{emph} {\1} }
-          \l_QA_tmp_tl
-
-        \regex_replace_all:nnN
           { \`\` }
           { ❝ }
           \l_QA_tmp_tl
@@ -765,6 +788,48 @@
               }
           }
 
+        % \regex_replace_once:nnN
+        %   { ❄️ \ *? \[\*(.*?)\] (.*) }
+        %   { \c{QAitem} {\1} {\2} }
+        %   \l_QA_tmp_tl
+        \bool_set_false:N \l_QA_regex_no_more_match_bool
+        \bool_do_until:nn \l_QA_regex_no_more_match_bool
+          {
+            \regex_match:nVTF { \[\*(.*?)\] (.*?) \[\* } \l_QA_tmp_tl
+              {
+                \regex_replace_once:nnN
+                  { \[\*(.*?)\] (.*?) \[\* }
+                  { \c{QAitem} {\1} {\2} \[\* }
+                  \l_QA_tmp_tl
+              }
+              {
+                \bool_set_true:N \l_QA_regex_no_more_match_bool
+              }
+          }
+        \regex_replace_once:nnN
+          { \[\*(.*?)\] (.*) }
+          { \c{QAitem} {\1} {\2} }
+          \l_QA_tmp_tl
+
+        \bool_set_false:N \l_QA_regex_no_more_match_bool
+        \bool_do_until:nn \l_QA_regex_no_more_match_bool
+          {
+            \regex_match:nVTF { 【\*(.*?)】 (.*?) 【\* } \l_QA_tmp_tl
+              {
+                \regex_replace_once:nnN
+                  { 【\*(.*?)】 (.*?) 【\* }
+                  { \c{QAitem} {\1} {\2} 【\* }
+                  \l_QA_tmp_tl
+              }
+              {
+                \bool_set_true:N \l_QA_regex_no_more_match_bool
+              }
+          }
+        \regex_replace_once:nnN
+          { 【\*(.*?)】 (.*) }
+          { \c{QAitem} {\1} {\2} }
+          \l_QA_tmp_tl
+
         \regex_replace_once:nnN
           { ❄️ \ *? \[(.*?)\] (\*?) (.*) }
           { \c{QAenum} \2 {\1} {\3} }
@@ -772,6 +837,19 @@
         \regex_replace_once:nnN
           { ❄️ \ *? 【(.*?)】 (\*?) (.*) }
           { \c{QAenum} \2 {\1} {\3} }
+          \l_QA_tmp_tl
+
+        \regex_replace_all:nnN
+          { \*\*\* (.*?) \*\*\* }
+          { \c{textbf} { \c{emph} {\1} } }
+          \l_QA_tmp_tl
+        \regex_replace_all:nnN
+          { \*\* (.*?) \*\* }
+          { \c{textbf} {\1} }
+          \l_QA_tmp_tl
+        \regex_replace_all:nnN
+          { \* (.*?) \* }
+          { \c{emph} {\1} }
           \l_QA_tmp_tl
 
         \regex_replace_once:nnN { ❄️ } { } \l_QA_tmp_tl
@@ -852,6 +930,12 @@
   }
 
 \pagestyle { empty }
+
+\def\textasterisk{*}
+\def\textbacktick{`}
+\def\textcolon{:}
+\def\texteqsign{=}
+\def\textsharp{\#}
 
 \endinput
 %%
