@@ -243,6 +243,7 @@
 % Custom commands
 \QAaddmoretexcs [LaTeX]
   {% LaTeX2 commands
+    UseLanguage,
     TheDate,
     SetLogoCode,
   }
@@ -320,10 +321,10 @@
   {
     tcbox~raise~base,
     nobeforeafter,
-    boxrule=.1pt, boxsep=1.2pt, arc=1pt,
-    left=.5pt, right=.5pt, top=.2pt, bottom=.2pt,
-    colframe=main-text!80!paper,
-    colback=main-text!5!paper,
+    boxrule=.1pt, boxsep=1.5pt, arc=1pt,
+    left=.5pt, right=.5pt, top=0pt, bottom=0pt,
+    colframe=main-text!60!paper,
+    colback=main-text!3!paper,
     % colupper=emph-text,
     fontupper=\small\normalfont\ttfamily,
   }

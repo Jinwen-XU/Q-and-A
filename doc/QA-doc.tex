@@ -6,12 +6,12 @@
 \def\PackageVersion{2023/11/01}
 \def\PackageSubVersion{}
 
-\newcommand{\QApackage}{\normalfont\textsf{Q-A}}
+\newcommand{\QApackage}{{\normalfont\textsf{Q-A}}}
 
 
 \title{\QApackage{}\\\smallskip\itshape Typesetting Q\&A-style conversation made easier}
 \author{Jinwen XU}
-\thanks{Corresponding to: \texttt{\QApackage{}~\PackageVersion\PackageSubVersion}}
+% \thanks{Corresponding to: \texttt{\QApackage{}~\PackageVersion\PackageSubVersion}}
 \date{\TheDate{\PackageVersion}[only-year-month], in Paris}
 
 
@@ -26,6 +26,9 @@
 \begin{document}
 
 \maketitle
+
+"
+  Corresponding to: {\normalfont\texttt{\QApackage{}~\PackageVersion\PackageSubVersion}}.
 
 
 ##+ {Introduction}
@@ -134,7 +137,46 @@
     \item An emphasized enumeration should also begin in a new paragraph.
     \item Likewise, a `section`/`subsection`/`subsubsection` should be placed in a separate paragraph.
     \item Input or inclusion of files should also be operated in a separate paragraph.
+    \item For emphasizing and bolding the text, it would be necessary to separate the asterisks with~`\{\}` in some special cases: `\textast\textast like\textast\textast\{\}\textast\textast\textast this\textast\textast\textast\{\}\textast one\textast`.
   \end{itemize}
+
+
+##+ {Customization}
+
+?
+  Now that we have learned the basic usage, I would like to know more. Can I customize the interface to suit my preferences, for instance?
+
+:
+  Certainly. Apart from using themes via class option, you may also change the identifiers and the labels for each role in the conversation.
+
+  [Changing itentifiers]
+  Instead of the default identifiers, such as `?` for questions, you may also use your preferred one. This can be done via the use of `\backslash QASetTypePrefix` in the preamble of your document.
+  \begin{itemize}
+    \item Use `\backslash QASetTypePrefix\{Q\}\{\meta{identifiers}\}` to set the identifiers for questions.
+    \item Use `\backslash QASetTypePrefix\{A\}\{\meta{identifiers}\}` to set the identifiers for answers.
+    \item Use `\backslash QASetTypePrefix\{N\}\{\meta{identifiers}\}` to set the identifiers for narrations.
+  \end{itemize}
+  Here, \meta{identifier} is a comma list of your specified identifiers. For example, the default identifier for narrations is preset via `\backslash QASetTypePrefix\{N\}\{N:,",“,”,「\}`. Note that, due to its implementation, the identifier cannot contain comma `,` in it.
+
+  [Changing labels]
+  You may also change the labels. For example, from the text \textquote{Q:} to a logo icon. This can be done via the use of `\backslash SetLogoCode` in the preamble of your document.
+  \begin{itemize}
+    \item Use `\backslash SetLogoCode\{Q\}\{\meta{logo code}\}` to set the labels for questions.
+    \item Use `\backslash SetLogoCode\{A\}\{\meta{logo code}\}` to set the labels for answers.
+  \end{itemize}
+  Here, \meta{logo code} is the actual code for displaying the corresponding label. For example, the default label for questions is preset via `\backslash SetLogoCode\{Q\}\{\textbackslash textbf\{Q\textbackslash,:\}\}`. In the demo document, you can find an example on how to use this command to specify a logo for each role in the conversation.
+
+
+##+ {Known Issues}
+
+?
+  Is there any known issue with this document class?
+
+:
+  Unfortunately, yes `:(`.
+
+  Currently, the code highlight is done by the package `listings`. Due to its own limitations, the result is still far from satisfactory. Using `minted` instead could improve the situation, but this would require `-shell-escape` and some external tweaking, thus it would still take some effort to make it work with the current document class.
+
 
 ##+ {Get Support}
 
