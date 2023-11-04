@@ -318,11 +318,19 @@
   {
     \textcolor{emph-text}{\textbf{ #1 }}
   }
-\NewDocumentCommand \QAenum { m m }
+\NewDocumentCommand \QAenum { s m m }
   {
-    \begin{enumerate}[resume]
-      \item \QAemph{ #1 : } ~ \ignorespaces #2
-    \end{enumerate}
+    \bool_if:NTF #1
+      {
+        \begin{enumerate}
+          \item \QAemph{ #2 : } ~ \ignorespaces #3
+        \end{enumerate}
+      }
+      {
+        \begin{enumerate}[resume]
+          \item \QAemph{ #2 : } ~ \ignorespaces #3
+        \end{enumerate}
+      }
   }
 
 \NewDocumentCommand \QAnote { m }
@@ -758,12 +766,12 @@
           }
 
         \regex_replace_once:nnN
-          { ❄️ \ *? \[(.*?)\] (.*) }
-          { \c{QAenum} {\1} {\2} }
+          { ❄️ \ *? \[(.*?)\] (\*?) (.*) }
+          { \c{QAenum} \2 {\1} {\3} }
           \l_QA_tmp_tl
         \regex_replace_once:nnN
-          { ❄️ \ *? 【(.*?)】 (.*) }
-          { \c{QAenum} {\1} {\2} }
+          { ❄️ \ *? 【(.*?)】 (\*?) (.*) }
+          { \c{QAenum} \2 {\1} {\3} }
           \l_QA_tmp_tl
 
         \regex_replace_once:nnN { ❄️ } { } \l_QA_tmp_tl
