@@ -1,10 +1,10 @@
 <!-- Copyright (C) 2023 by Jinwen XU -->
 
-# `Q-A` — Typesetting Q\&A-style conversation made easier
+# `Q-and-A` — Typesetting Q\&A-style conversation made easier
 
 ## Introduction
 
-`Q-A` is a LaTeX document class for you to typeset Q&A-style conversation.
+`Q-and-A` is a LaTeX document class for you to typeset Q&A-style conversation.
 
 It turns simple pure text Q&A dialog into carefully designed document.
 
@@ -16,15 +16,15 @@ Notably, it features two themes, `ChatGPT-light` and `ChatGPT-dark`, enabling yo
 
 If you are using TeX Live 2024 or newer, or the most recent version of MikTeX, then this package should already be included, and you don't need to do anything.
 
-Otherwise, you need to check for package update to see if you can receive it. In case not, you can always go to [the CTAN page](https://ctan.org/pkg/Q-A) to download the `.zip` file with all related files included.
+Otherwise, you need to check for package update to see if you can receive it. In case not, you can always go to [the CTAN page](https://ctan.org/pkg/Q-and-A) to download the `.zip` file with all related files included.
 
 ## Usage
 
-Please refer to [the documentation](https://github.com/Jinwen-XU/Q-A/blob/main/doc/QA-doc.pdf) for detailed usage.
+Please refer to [the documentation](https://github.com/Jinwen-XU/Q-and-A/blob/main/doc/Q-and-A-doc.pdf) for detailed usage.
 
 > You may get started by exploring the demo document.
 
-> If you don't find what you were expecting, or if you would like some elements to be changed or improved, feel free to post a feature request via [the GitHub issue](https://github.com/Jinwen-XU/Q-A/issues).
+> If you don't find what you were expecting, or if you would like some elements to be changed or improved, feel free to post a feature request via [the GitHub issue](https://github.com/Jinwen-XU/Q-and-A/issues).
 
 
 ## TeXnical details

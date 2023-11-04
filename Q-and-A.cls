@@ -11,11 +11,11 @@
 %%
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
-  {Q-A}
+  {Q-and-A}
   {2023/11/01} {}
   {Document class for typesetting Q&A conversation}
 
-\keys_define:nn { Q-A }
+\keys_define:nn { Q-and-A }
   {
     , scroll      .bool_set:N   = \l__QA_scroll_bool
     , scroll      .initial:n    = { false }
@@ -39,7 +39,7 @@
                                     \PassOptionsToPackage { \CurrentOption } { ProjLib }
                                   }
   }
-\ProcessKeyOptions [ Q-A ]
+\ProcessKeyOptions [ Q-and-A ]
 
 \sys_if_engine_pdftex:TF
   {
@@ -939,4 +939,4 @@
 
 \endinput
 %%
-%% End of file `Q-A.cls'.
+%% End of file `Q-and-A.cls'.
