@@ -133,7 +133,7 @@
 
 \exp_args:No \str_if_in:nnT { \l__QA_theme_str } { ChatGPT }
   {
-    \dim_set:Nn \l_QA_item_indentation_dim { .25em }
+    \dim_set:Nn \l_QA_item_indentation_dim { .33em }
     \dim_set:Nn \l_QA_list_indentation_dim { 4.5em }
     \dim_set:Nn \l_QA_list_labelsep_dim { 1.5em }
   }
@@ -142,14 +142,57 @@
 \setlist [ QA-entry ] { font = \normalfont\sffamily, leftmargin = \l_QA_list_indentation_dim, labelsep = \l_QA_list_labelsep_dim, labelwidth=!, parsep=\parskip }
 \renewcommand{\descriptionlabel}[1]{#1}
 
+\bool_new:N \l__QA_inside_list_bool
+\bool_set_false:N \l__QA_inside_list_bool
+\hook_gput_code:nnn { env/enumerate/begin } { QA }
+  { \bool_set_true:N \l__QA_inside_list_bool }
+% \hook_gput_code:nnn { env/QA-em-itemize/begin } { QA }
+%   { \bool_set_true:N \l__QA_inside_list_bool }
+
+\tl_new:N \l__QA_item_indentation_tl
+\tl_set:Nn \l__QA_item_indentation_tl
+  {
+    \bool_if:NTF \l__QA_inside_list_bool
+      { 1.5em }
+      { \l_QA_item_indentation_dim }
+  }
+
+\newlist { QA-em-itemize } { itemize } { 1 }
+\setlist[QA-em-itemize,1]{
+  leftmargin= \l__QA_item_indentation_tl, labelwidth=1em,
+  label=\textcolor{.!27!paper}{\raisebox{.12em}{\scriptsize$\bullet$}}}
+% \setlist[QA-em-itemize,1]{
+%   leftmargin= \l_QA_item_indentation_dim, labelwidth=1em,
+%   label=\textcolor{.!27!paper}{$\bullet$}}
+
 % The following line is mainly for the scroll mode
-\setlist[itemize]{leftmargin=\maxof{\parindent}{1.5em},label=\textcolor{.!27!paper}{\raisebox{.12em}{\scriptsize$\bullet$}}}
+\setlist[itemize]{
+  leftmargin= \l__QA_item_indentation_tl, labelwidth=1em,
+  label=\textcolor{.!27!paper}{\raisebox{.12em}{\scriptsize$\bullet$}}}
 \AddLanguageSetting
   {
-    \setlist[itemize,1]{leftmargin=\maxof{\parindent}{1.5em},label=\textcolor{.!27!paper}{\raisebox{.12em}{\scriptsize$\bullet$}}}
-    \setlist[itemize,2]{leftmargin=*,label=\textcolor{.!27!paper}{\rule[.2\baselineskip]{.55em}{.75pt}}}
+    \setlist[itemize,1]{
+      leftmargin= \l__QA_item_indentation_tl, labelwidth=1em,
+      label=\textcolor{.!27!paper}{\raisebox{.12em}{\scriptsize$\bullet$}}}
+    \setlist[itemize,2]{
+      leftmargin= 1.5em,
+      label=\textcolor{.!27!paper}{\rule[.2\baselineskip]{.55em}{.75pt}}}
     \setlist[itemize,3]{leftmargin=*,label=\textcolor{.!27!paper}{$\circ$}}
     \setlist[itemize,4]{leftmargin=*,label=\textcolor{.!27!paper}{$\ast$}}
+  }
+\AddLanguageSetting [ FR ]
+  {
+    \setlist[itemize,1]{%leftmargin=\maxof{\parindent}{1.5em},
+      leftmargin= \l__QA_item_indentation_tl, labelwidth=1em,
+      label=\textcolor{.!39!paper}{\rule[.2\baselineskip]{.8em}{.75pt}}}
+  }
+\AddLanguageSetting [ ES ]
+  {
+    \setlist[itemize,1]{%leftmargin=\maxof{\parindent}{1.5em},
+      leftmargin= \l__QA_item_indentation_tl, labelwidth=1em,
+      label=\textcolor{.!27!paper}{
+        \leavevmode\hbox to 1.2ex{\hss\vrule height .9ex width .7ex depth -.2ex\hss}
+      }}
   }
 
 \setlist[enumerate,1]{label = \color{.!55!paper}\arabic*.,
@@ -287,7 +330,7 @@
   }
 
 \tl_new:N \g_QA_content_tl
-\NewDocumentEnvironment { QA } { +b }
+\NewDocumentEnvironment { Q-and-A } { +b }
   {
     \tl_gset:Nn \g_QA_content_tl { #1 }
     \QA_parse_content:N \g_QA_content_tl
@@ -319,12 +362,7 @@
     \textcolor{emph-text}{\textbf{ #1 }}
   }
 
-\bool_new:N \l__QA_inside_list_bool
-\bool_set_false:N \l__QA_inside_list_bool
-\hook_gput_code:nnn { env/enumerate/begin } { QA }
-  { \bool_set_true:N \l__QA_inside_list_bool }
-\hook_gput_code:nnn { env/itemize/begin } { QA }
-  { \bool_set_true:N \l__QA_inside_list_bool }
+\def \QAadjustitem { \vspace{0pt} }
 \NewDocumentCommand \QAitem { m m }
   {
     \tl_if_blank:nTF { #1 }
@@ -337,13 +375,15 @@
         \bool_if:NTF \l__QA_inside_list_bool
           {
             \begin{itemize}
-              \item \QAemph{ #1 : } ~ \ignorespaces #2
+              \item \QAemph{ \ignorespaces #1 : } ~ \ignorespaces #2
             \end{itemize}
           }
           {
-            \begin{itemize}[leftmargin=\l_QA_item_indentation_dim, labelsep=\l_QA_labelsep_dim, labelwidth=1em]
-              \item \QAemph{ #1 : } ~ \ignorespaces #2
-            \end{itemize}
+            \begin{QA-em-itemize}
+              \bool_set_true:N \l__QA_inside_list_bool
+              \item \QAemph{ \ignorespaces #1 : } ~ \ignorespaces #2
+            \end{QA-em-itemize}
+            % \bool_set_true:N \l__QA_inside_list_bool
           }
       }
   }
@@ -790,6 +830,12 @@
         %   { ❄️ \ *? \[\*(.*?)\] (.*) }
         %   { \c{QAitem} {\1} {\2} }
         %   \l_QA_tmp_tl
+        %% Process the first and wrap the others inside
+        \regex_replace_once:nnN
+          { ❄️ \ *? \[\*(.*?)\] (.*) }
+          { \c{QAitem} {\1} {\2} }
+          \l_QA_tmp_tl
+        %% Process the middle ones
         \bool_set_false:N \l_QA_regex_no_more_match_bool
         \bool_do_until:nn \l_QA_regex_no_more_match_bool
           {
@@ -797,18 +843,25 @@
               {
                 \regex_replace_once:nnN
                   { \[\*(.*?)\] (.*?) \[\* }
-                  { \c{QAitem} {\1} {\2} \[\* }
+                  { \c{QAitem} {\1} {\2} \c{QAadjustitem} \[\* }
                   \l_QA_tmp_tl
               }
               {
                 \bool_set_true:N \l_QA_regex_no_more_match_bool
               }
           }
+        %% Process the last one
         \regex_replace_once:nnN
           { \[\*(.*?)\] (.*) }
           { \c{QAitem} {\1} {\2} }
           \l_QA_tmp_tl
 
+        %% Process the first and wrap the others inside
+        \regex_replace_once:nnN
+          { ❄️ \ *? 【\*(.*?)】 (.*) }
+          { \c{QAitem} {\1} {\2} }
+          \l_QA_tmp_tl
+        %% Process the middle ones
         \bool_set_false:N \l_QA_regex_no_more_match_bool
         \bool_do_until:nn \l_QA_regex_no_more_match_bool
           {
@@ -816,13 +869,14 @@
               {
                 \regex_replace_once:nnN
                   { 【\*(.*?)】 (.*?) 【\* }
-                  { \c{QAitem} {\1} {\2} 【\* }
+                  { \c{QAitem} {\1} {\2} \c{QAadjustitem} 【\* }
                   \l_QA_tmp_tl
               }
               {
                 \bool_set_true:N \l_QA_regex_no_more_match_bool
               }
           }
+        %% Process the last one
         \regex_replace_once:nnN
           { 【\*(.*?)】 (.*) }
           { \c{QAitem} {\1} {\2} }
@@ -886,16 +940,16 @@
       marginparwidth=.75in,
       footnotesep=2em plus 2pt minus 2pt,
     }
-    \hook_gput_code:nnn { begindocument } { QA }
+    \hook_gput_code:nnn { begindocument } { Q-and-A }
       {
         \setbox0=\vbox
         \bgroup
-        \begin { QA }
+        \begin { Q-and-A }
       }
     \providecommand{\pdfpageheight}{\pageheight}
-    \hook_gput_code:nnn { enddocument } { QA }
+    \hook_gput_code:nnn { enddocument } { Q-and-A }
       {
-        \end { QA }
+        \end { Q-and-A }
         \egroup
         \dimen0=\dp0
         \pdfpageheight=\dimexpr\ht0\relax
@@ -917,13 +971,13 @@
       marginparwidth=.75in,
       footnotesep=2em plus 2pt minus 2pt,
     }
-    \hook_gput_code:nnn { begindocument/end } { QA }
+    \hook_gput_code:nnn { begindocument/end } { Q-and-A }
       {
-        \begin { QA }
+        \begin { Q-and-A }
       }
-    \hook_gput_code:nnn { enddocument } { QA }
+    \hook_gput_code:nnn { enddocument } { Q-and-A }
       {
-        \end { QA }
+        \end { Q-and-A }
       }
   }
 
