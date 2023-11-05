@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {Q-and-A}
-  {2023/11/01} {}
+  {2023/11/05} {}
   {Document class for typesetting Q&A conversation}
 
 \keys_define:nn { Q-and-A }
@@ -357,13 +357,13 @@
     \clearpage
   }
 
-\NewDocumentCommand \QAemph { m }
+\NewDocumentCommand \QAEmph { m }
   {
     \textcolor{emph-text}{\textbf{ #1 }}
   }
 
 \def \QAadjustitem { \vspace{0pt} }
-\NewDocumentCommand \QAitem { m m }
+\NewDocumentCommand \QAItem { m m }
   {
     \tl_if_blank:nTF { #1 }
       {
@@ -375,26 +375,26 @@
         \bool_if:NTF \l__QA_inside_list_bool
           {
             \begin{itemize}
-              \item \QAemph{ \ignorespaces #1 : } ~ \ignorespaces #2
+              \item \QAEmph{ \ignorespaces #1 : } ~ \ignorespaces #2
             \end{itemize}
           }
           {
             \begin{QA-em-itemize}
               \bool_set_true:N \l__QA_inside_list_bool
-              \item \QAemph{ \ignorespaces #1 : } ~ \ignorespaces #2
+              \item \QAEmph{ \ignorespaces #1 : } ~ \ignorespaces #2
             \end{QA-em-itemize}
             % \bool_set_true:N \l__QA_inside_list_bool
           }
       }
   }
-\NewDocumentCommand \QAenum { s m m }
+\NewDocumentCommand \QAEnum { s m m }
   {
     \tl_if_blank:nTF { #1 }
       {
         \tl_set:Nn \l_tmpa_tl { }
       }
       {
-        \tl_set:Nn \l_tmpa_tl { \QAemph{ #2 : } ~ }
+        \tl_set:Nn \l_tmpa_tl { \QAEmph{ #2 : } ~ }
       }
     \bool_if:NTF #1
       {
@@ -409,7 +409,7 @@
       }
   }
 
-\NewDocumentCommand \QAnote { m }
+\NewDocumentCommand \QANote { m }
   {
     \dim_set:Nn \l_tmpa_dim { \labelsep }
     \begin{tcolorbox}[enhanced~jigsaw, breakable,
@@ -424,10 +424,87 @@
     ]
         #1
     \end{tcolorbox}
+    \vspace{.15\baselineskip}
     \dim_gset:Nn \labelsep { \l_tmpa_dim }
   }
 
-\newtcbox \QAcodebox
+\newenvironment{QACompactCenter}
+  {\parskip=0pt\par\nopagebreak\centering}
+  {\par\noindent\ignorespacesafterend}
+\newenvironment{QACenter}
+  {\parskip=0pt\par\medskip\nopagebreak\centering}
+  {\par\noindent\ignorespacesafterend}
+\newenvironment{QALeft}
+  {\parskip=0pt\par\medskip\nopagebreak\raggedright}
+  {\par\noindent\ignorespacesafterend}
+\newenvironment{QARight}
+  {\parskip=0pt\par\medskip\nopagebreak\raggedleft}
+  {\par\noindent\ignorespacesafterend}
+\NewDocumentCommand \QACompactCenterText { m }
+  {
+    \begin{QACompactCenter}
+      #1
+    \end{QACompactCenter}
+  }
+\NewDocumentCommand \QAShowImageCenter { D<>{*} m D<>{*} }
+  {
+    \str_if_eq:nnTF { #1 } { * }
+      {
+        \str_if_eq:nnTF { #3 } { * }
+          {
+            \tl_set:Nn \l_tmpa_tl { 1 }
+          }
+          {
+            \tl_set:Nn \l_tmpa_tl { #3 }
+          }
+      }
+      {
+        \tl_set:Nn \l_tmpa_tl { #1 }
+      }
+    \begin{QACenter}
+      \includegraphics[width= \tl_use:N \l_tmpa_tl \linewidth]{#2}
+    \end{QACenter}
+  }
+\NewDocumentCommand \QAShowImageLeft { D<>{*} m D<>{*} }
+  {
+    \str_if_eq:nnTF { #1 } { * }
+      {
+        \str_if_eq:nnTF { #3 } { * }
+          {
+            \tl_set:Nn \l_tmpa_tl { 1 }
+          }
+          {
+            \tl_set:Nn \l_tmpa_tl { #3 }
+          }
+      }
+      {
+        \tl_set:Nn \l_tmpa_tl { #1 }
+      }
+    \begin{QALeft}
+      \includegraphics[width= \tl_use:N \l_tmpa_tl \linewidth]{#2}
+    \end{QALeft}
+  }
+\NewDocumentCommand \QAShowImageRight { D<>{*} m D<>{*} }
+  {
+    \str_if_eq:nnTF { #1 } { * }
+      {
+        \str_if_eq:nnTF { #3 } { * }
+          {
+            \tl_set:Nn \l_tmpa_tl { 1 }
+          }
+          {
+            \tl_set:Nn \l_tmpa_tl { #3 }
+          }
+      }
+      {
+        \tl_set:Nn \l_tmpa_tl { #1 }
+      }
+    \begin{QARight}
+      \includegraphics[width= \tl_use:N \l_tmpa_tl \linewidth]{#2}
+    \end{QARight}
+  }
+
+\newtcbox \QACodebox
   {
     tcbox~raise~base,
     nobeforeafter,
@@ -438,14 +515,14 @@
     % colupper=emph-text,
     fontupper=\small\normalfont\ttfamily,
   }
-\NewDocumentCommand \QAcode { m }
+\NewDocumentCommand \QACode { m }
   {
     % \textcolor{emph-text}{\texttt{#1}}
-    \QAcodebox{\vphantom{Äpgjy}#1}
+    \QACodebox{\vphantom{Äpgjy}#1}
   }
 \exp_args:No \str_if_in:nnT { \l__QA_theme_str } { ChatGPT }
   {
-    \RenewDocumentCommand \QAcode { m }
+    \RenewDocumentCommand \QACode { m }
       {
         \textcolor{emph-text}{\bfseries
           % {\hskip.6ex\`{}\hskip-.15ex}
@@ -754,7 +831,7 @@
           \l_QA_tmp_tl
         \regex_replace_all:nnN
           { \` (.*?) \` }
-          { \c{QAcode} {\1} }
+          { \c{QACode} {\1} }
           \l_QA_tmp_tl
         \regex_replace_all:nnN
           { ❝ }
@@ -763,11 +840,33 @@
 
         \regex_replace_once:nnN
           { >>> \ *? (.*) }
-          { \c{QAnote} {\1} }
+          { \c{QANote} {\1} }
           \l_QA_tmp_tl
         \regex_replace_all:nnN
           { \ *? >>> \ *? }
           { }
+          \l_QA_tmp_tl
+
+        \exp_args:Nno \regex_split:nnN { >> } { \l_QA_tmp_tl } \l_tmpa_seq
+        \seq_pop_left:NN \l_tmpa_seq \l_tmpa_tl
+        \tl_set_eq:NN \l_QA_tmp_tl \l_tmpa_tl
+        \seq_map_inline:Nn \l_tmpa_seq
+          {
+            \tl_put_right:Nn \l_QA_tmp_tl
+              { \QACompactCenterText { ####1 } }
+          }
+
+        \regex_replace_all:nnN
+          { \|\| }
+          { \c{QAShowImageCenter} }
+          \l_QA_tmp_tl
+        \regex_replace_all:nnN
+          { \(\( }
+          { \c{QAShowImageLeft} }
+          \l_QA_tmp_tl
+        \regex_replace_all:nnN
+          { \)\) }
+          { \c{QAShowImageRight} }
           \l_QA_tmp_tl
 
         \bool_set_false:N \l_QA_regex_no_more_match_bool
@@ -828,12 +927,12 @@
 
         % \regex_replace_once:nnN
         %   { ❄️ \ *? \[\*(.*?)\] (.*) }
-        %   { \c{QAitem} {\1} {\2} }
+        %   { \c{QAItem} {\1} {\2} }
         %   \l_QA_tmp_tl
         %% Process the first and wrap the others inside
         \regex_replace_once:nnN
           { ❄️ \ *? \[\*(.*?)\] (.*) }
-          { \c{QAitem} {\1} {\2} }
+          { \c{QAItem} {\1} {\2} }
           \l_QA_tmp_tl
         %% Process the middle ones
         \bool_set_false:N \l_QA_regex_no_more_match_bool
@@ -843,7 +942,7 @@
               {
                 \regex_replace_once:nnN
                   { \[\*(.*?)\] (.*?) \[\* }
-                  { \c{QAitem} {\1} {\2} \c{QAadjustitem} \[\* }
+                  { \c{QAItem} {\1} {\2} \c{QAadjustitem} \[\* }
                   \l_QA_tmp_tl
               }
               {
@@ -853,13 +952,13 @@
         %% Process the last one
         \regex_replace_once:nnN
           { \[\*(.*?)\] (.*) }
-          { \c{QAitem} {\1} {\2} }
+          { \c{QAItem} {\1} {\2} }
           \l_QA_tmp_tl
 
         %% Process the first and wrap the others inside
         \regex_replace_once:nnN
           { ❄️ \ *? 【\*(.*?)】 (.*) }
-          { \c{QAitem} {\1} {\2} }
+          { \c{QAItem} {\1} {\2} }
           \l_QA_tmp_tl
         %% Process the middle ones
         \bool_set_false:N \l_QA_regex_no_more_match_bool
@@ -869,7 +968,7 @@
               {
                 \regex_replace_once:nnN
                   { 【\*(.*?)】 (.*?) 【\* }
-                  { \c{QAitem} {\1} {\2} \c{QAadjustitem} 【\* }
+                  { \c{QAItem} {\1} {\2} \c{QAadjustitem} 【\* }
                   \l_QA_tmp_tl
               }
               {
@@ -879,16 +978,16 @@
         %% Process the last one
         \regex_replace_once:nnN
           { 【\*(.*?)】 (.*) }
-          { \c{QAitem} {\1} {\2} }
+          { \c{QAItem} {\1} {\2} }
           \l_QA_tmp_tl
 
         \regex_replace_once:nnN
           { ❄️ \ *? \[(.*?)\] (\*?) (.*) }
-          { \c{QAenum} \2 {\1} {\3} }
+          { \c{QAEnum} \2 {\1} {\3} }
           \l_QA_tmp_tl
         \regex_replace_once:nnN
           { ❄️ \ *? 【(.*?)】 (\*?) (.*) }
-          { \c{QAenum} \2 {\1} {\3} }
+          { \c{QAEnum} \2 {\1} {\3} }
           \l_QA_tmp_tl
 
         \regex_replace_all:nnN
@@ -986,8 +1085,11 @@
 \def\textasterisk{*}
 \def\textbacktick{`}
 \def\textcolon{:}
-\def\texteqsign{=}
+\def\textequalsign{=}
+\def\textleftparen{(}
+\def\textrightparen{)}
 \def\textsharp{\#}
+\def\textvert{|}
 
 \endinput
 %%

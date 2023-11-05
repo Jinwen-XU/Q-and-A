@@ -3,7 +3,7 @@
   scroll,
 ]{Q-and-A}
 
-\def\PackageVersion{2023/11/01}
+\def\PackageVersion{2023/11/05}
 \def\PackageSubVersion{}
 
 \newcommand{\QApackage}{{\normalfont\textsf{Q-and-A}}}
@@ -105,17 +105,39 @@
   \end{itemize}
 
   [Enumerate and Itemize]
-    [*Emphasized version]
     \begin{itemize}
-      \item An emphasized `enumerate` is marked by `[\meta{text}]` *at the beginning*, where `\meta{text}` is the text to be emphasized. The numbering is reset at the end of each answer.
-      \QAnote{If you wish to restart the numbering from \( 1 \), write an asterisk after the final bracket: `[\meta{text}]\textasterisk`.}
-      \item An emphasized `itemize` is marked by `[\textasterisk\meta{text}]`, where `\meta{text}` is the text to be emphasized.
+      \item **Emphasized version:**
+      \begin{itemize}
+        \item An emphasized `enumerate` is marked by `[\meta{text}]` *at the beginning*, where `\meta{text}` is the text to be emphasized. The numbering is reset at the end of each answer.
+        \QANote{If you wish to restart the numbering from \( 1 \), write an asterisk after the final bracket: `[\meta{text}]\textasterisk`.}
+        \item An emphasized `itemize` is marked by `[\textasterisk\meta{text}]`, where `\meta{text}` is the text to be emphasized.
+      \end{itemize}
+      \item **Normal version:**
+      \begin{itemize}
+        \item When `\meta{text}` is empty, you get the usual appearance of `enumerate` or `itemize`.
+      \end{itemize}
     \end{itemize}
-    [*Normal version]
-    \begin{itemize}
-      \item When `\meta{text}` is empty, you get the usual appearance of `enumerate` or `itemize`.
-    \end{itemize}
-    \QAnote{With this method of writing, each emphasized `enumerate` and `itemize` must be put into a separate paragraph, and the lists cannot be nested. The usual `enumerate` and `itemize` environments would still be useful if you need nested lists.}
+    \QANote{With this method of writing, each emphasized `enumerate` and `itemize` must be put into a separate paragraph, and the lists cannot be nested. The usual `enumerate` and `itemize` environments would still be useful if you need nested lists.}
+
+  [Images]
+  Displayed images can be included via one of the following ways:
+  \begin{itemize}
+    \item `\textvert\textvert{} <\meta{width}> \{\meta{image file name}\}` or `\textvert\textvert{} \{\meta{image file name}\} <\meta{width}>`: display in the center.
+    \item `\textleftparen\textleftparen{} <\meta{width}> \{\meta{image file name}\}` or `\textleftparen\textleftparen{} \{\meta{image file name}\} <\meta{width}>`: display on the left.
+    \item `\textrightparen\textrightparen{} <\meta{width}> \{\meta{image file name}\}` or `\textrightparen\textrightparen{} \{\meta{image file name}\} <\meta{width}>`: display on the right.
+  \end{itemize}
+  \QANote{The `\meta{width}` is optional. Here, `\meta{width}` is a number like `0.75`, the unit is `\textbackslash linewidth`. When `\meta{width}` is not given, the width would be full `\textbackslash linewidth`.}
+  \begin{itemize}
+    \item For centered image, the caption can be written via `\textgreater\textgreater{} \meta{caption text}`.
+  \end{itemize}
+  \QANote{Currently, the `\meta{caption text}` shall be directly printed in the center. You may wish to add a pair of parentheses around it.}
+
+  [Code]
+  Due to the current implementation of this document class, it is unfortunate that you cannot directly insert source code in your document. There are some workarounds, though.
+  \begin{itemize}
+    \item For *displayed* code, stored the code into a separate file, and then use `\textequalsign\textequalsign{} \{\meta{file name}\}` to print~it. You may also use an optional argument like `\textequalsign\textequalsign{} [\meta{language}] \{\meta{file name}\}` to select the language of your code.
+    \item For *inline* code, you may simply write it between two backticks `\textbacktick\meta{code}\textbacktick`, similar to the Markdown syntax. However, be aware that special characters need to be escaped, for example, `\textbackslash` should be written as `\textbackslash textbackslash`, `\{` should be written as `\textbackslash\{`, `\%` should be written as `\textbackslash\%`, etc.
+  \end{itemize}
 
   [Sections]
   \begin{itemize}
@@ -134,14 +156,12 @@
     \item Use `\textcolon\textcolon\textcolon{} \{\meta{file name}\}` to include a file.
   \end{itemize}
 
-  [Code]
-  Due to the current implementation of this document class, it is unfortunate that you cannot directly insert source code in your document. There are some workarounds, though.
-  \begin{itemize}
-    \item For *displayed* code, stored the code into a separate file, and then use `\texteqsign\texteqsign{} \{\meta{file name}\}` to print it. You may also use an optional argument like `\texteqsign\texteqsign{} [\meta{language}] \{\meta{file name}\}` to select the language of your code.
-    \item For *inline* code, you may simply write it between two backticks `\textbacktick\meta{code}\textbacktick`, similar to the Markdown syntax. However, be aware that special characters need to be escaped, for example, `\textbackslash` should be written as `\textbackslash textbackslash`, `\{` should be written as `\textbackslash\{`, `\%` should be written as `\textbackslash\%`, etc.
-  \end{itemize}
+  \medskip
 
   And don't forget that you are still using \LaTeX, so images, tables and lists can be written as usual.
+
+
+##+ {Cautions}
 
 ?
   I see. Is there anything else for me to be careful about?
@@ -150,17 +170,26 @@
   Glad that you asked. Here are several things that should be taken care of:
   \begin{itemize}
     \item A question, answer or narration should always begin in a new paragraph.
-    \item An emphasized `enumerate` should also begin in a new paragraph. An emphasized `itemize` should usually begin in a new paragraph, with the exception that it can be used within an `enumerate`.
+    \item An emphasized `enumerate` should also begin in a new paragraph. An emphasized `itemize` should usually begin in a new paragraph, with the exception that it can (partially) be used within an `enumerate`.
     \item Likewise, a `section`/`subsection`/`subsubsection` should be placed in a separate paragraph.
     \item Input or inclusion of files should also be operated in a separate paragraph.
     \item For emphasizing and bolding the text, it would be necessary to separate the asterisks with~`\{\}` in some special cases: `\textasterisk\textasterisk like\textasterisk\textasterisk\{\}\textasterisk\textasterisk\textasterisk this\textasterisk\textasterisk\textasterisk\{\}\textasterisk one\textasterisk`.
-    \item Due to the recognition of the syntax, you cannot directly use characters like `\textasterisk` as usual, especially in math mode. You should consider using an alternative macro, such as `\backslash ast` for `\textasterisk` in math mode, or define a command version of the character in the preamble, such as `\backslash textasterisk` for `\textasterisk`. A list of predefined commands are:
+    \item Due to the recognition of the syntax, you cannot directly use characters like `\textasterisk` as usual, especially in math mode. You should consider using an alternative macro, such as `\textbackslash ast` for `\textasterisk` in math mode, or define a command version of the character in the preamble, such as `\textbackslash textasterisk` for `\textasterisk`. A list of predefined commands are:
     \begin{itemize}
-      \item `\backslash textasterisk` for `\textasterisk`;
-      \item `\backslash textbacktick` for `\textbacktick`;
-      \item `\backslash textcolon` for `\textcolon`;
-      \item `\backslash texteqsign` for `\texteqsign`;
-      \item `\backslash textsharp` for `\textsharp`.
+      \item `\textbackslash textasterisk` for `\textasterisk`;
+      \item `\textbackslash textbacktick` for `\textbacktick`;
+      \item `\textbackslash textcolon` for `\textcolon`;
+      \item `\textbackslash textequalsign` for `\textequalsign`;
+      \item `\textbackslash textleftparen` for `\textleftparen`;
+      \item `\textbackslash textrightparen` for `\textrightparen`;
+      \item `\textbackslash textsharp` for `\textsharp`.
+      \item `\textbackslash textvert` for `\textvert`.
+    \end{itemize}
+    There are also a few that already provided by \LaTeX, such as:
+    \begin{itemize}
+      \item `\textbackslash textbackslash` for `\textbackslash`;
+      \item `\textbackslash textgreater` for `\textgreater`;
+      \item `\textbackslash textless` for `\textless`.
     \end{itemize}
   \end{itemize}
 
@@ -174,23 +203,23 @@
   Certainly. Apart from using themes via class option, you may also change the identifiers and the labels for each role in the conversation.
 
   [Changing itentifiers]
-  Instead of the default identifiers, such as `?` for questions, you may also use your preferred one. This can be done via the use of `\backslash QASetTypePrefix` in the preamble of your document.
+  Instead of the default identifiers, such as `?` for questions, you may also use your preferred one. This can be done via the use of `\textbackslash QASetTypePrefix` in the preamble of your document.
   \begin{itemize}
-    \item Use `\backslash QASetTypePrefix\{Q\}\{\meta{identifiers}\}` to set the identifiers for questions.
-    \item Use `\backslash QASetTypePrefix\{A\}\{\meta{identifiers}\}` to set the identifiers for answers.
-    \item Use `\backslash QASetTypePrefix\{N\}\{\meta{identifiers}\}` to set the identifiers for narrations.
+    \item Use `\textbackslash QASetTypePrefix\{Q\}\{\meta{identifiers}\}` to set the identifiers for questions.
+    \item Use `\textbackslash QASetTypePrefix\{A\}\{\meta{identifiers}\}` to set the identifiers for answers.
+    \item Use `\textbackslash QASetTypePrefix\{N\}\{\meta{identifiers}\}` to set the identifiers for narrations.
   \end{itemize}
-  Here, \meta{identifier} is a comma list of your specified identifiers. For example, the default identifier for narrations is preset via `\backslash QASetTypePrefix\{N\}\{N:,",“,”,「\}`.
-  \QAnote{Note that, due to its implementation, the identifier cannot contain comma `,` in it. If you wish to use an identifier that contains a comma, you may use `\backslash QAAddTypePrefix` instead, which only adds *one* identifier per use.}
-  \QAnote{Note also that, the identifiers are *reset* upon changing of language. Thus, you need to put your setting into the corresponding language configuration, for example, via `\backslash AddLanguageSetting[\meta{language name}]\{\meta{settings}\}`}
+  Here, \meta{identifier} is a comma list of your specified identifiers. For example, the default identifier for narrations is preset via `\textbackslash QASetTypePrefix\{N\}\{N:,",“,”,「\}`.
+  \QANote{Note that, due to its implementation, the identifier cannot contain comma `,` in it. If you wish to use an identifier that contains a comma, you may use `\textbackslash QAAddTypePrefix` instead, which only adds *one* identifier per use.}
+  \QANote{Note also that, the identifiers are *reset* upon changing of language. Thus, you need to put your setting into the corresponding language configuration, for example, via `\textbackslash AddLanguageSetting[\meta{language name}]\{\meta{settings}\}`}
 
   [Changing labels]
-  You may also change the labels. For example, from the text \textquote{Q:} to a logo icon. This can be done via the use of `\backslash SetLogoCode` in the preamble of your document.
+  You may also change the labels. For example, from the text \textquote{Q:} to a logo icon. This can be done via the use of `\textbackslash SetLogoCode` in the preamble of your document.
   \begin{itemize}
-    \item Use `\backslash SetLogoCode\{Q\}\{\meta{logo code}\}` to set the labels for questions.
-    \item Use `\backslash SetLogoCode\{A\}\{\meta{logo code}\}` to set the labels for answers.
+    \item Use `\textbackslash SetLogoCode\{Q\}\{\meta{logo code}\}` to set the labels for questions.
+    \item Use `\textbackslash SetLogoCode\{A\}\{\meta{logo code}\}` to set the labels for answers.
   \end{itemize}
-  Here, \meta{logo code} is the actual code for displaying the corresponding label. For example, the default label for questions is preset via `\backslash SetLogoCode\{Q\}\{\textbackslash textbf\{Q\textbackslash,:\}\}`.
+  Here, \meta{logo code} is the actual code for displaying the corresponding label. For example, the default label for questions is preset via `\textbackslash SetLogoCode\{Q\}\{\textbackslash textbf\{Q\textbackslash,:\}\}`.
   >>> In the demo document, you can find an example on how to use this command to specify a logo for each role in the conversation.
 
 

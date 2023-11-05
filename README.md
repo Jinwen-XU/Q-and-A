@@ -4,9 +4,7 @@
 
 ## Introduction
 
-`Q-and-A` is a LaTeX document class for you to typeset Q&A-style conversation.
-
-It turns simple pure text Q&A dialog into carefully designed document.
+`Q-and-A` is a LaTeX document class for you to typeset Q&A-style conversation. It turns simple pure text Q&A dialog into carefully designed document.
 
 Notably, it features two themes, `ChatGPT-light` and `ChatGPT-dark`, enabling you to format your Q&A dialog in a way that closely resembles the interface of ChatGPT.
 
@@ -22,7 +20,7 @@ Otherwise, you need to check for package update to see if you can receive it. In
 
 Please refer to [the documentation](https://github.com/Jinwen-XU/Q-and-A/blob/main/doc/Q-and-A-doc.pdf) for detailed usage.
 
-> You may get started by exploring the demo document.
+> You may get started by exploring [the demo documents](https://github.com/Jinwen-XU/Q-and-A/tree/main/demo).
 
 > If you don't find what you were expecting, or if you would like some elements to be changed or improved, feel free to post a feature request via [the GitHub issue](https://github.com/Jinwen-XU/Q-and-A/issues).
 
