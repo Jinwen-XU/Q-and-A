@@ -68,9 +68,10 @@
 
   The available class options include:
   \begin{itemize}
+    \item Font size options such as `11pt`, `12pt`.
     \item `scroll`: turns the scroll mode on, which generates a single-page pdf similar to a long screenshot. It is recommended to use this option if your document contains some large piece of code.
     \item `use theme = \meta{theme}`: use the selected theme, available choices include: `default` (like the current document), `ChatGPT-light` and `ChatGPT-dark` (see the demo documents).
-    \item Font size options such as `11pt`, `12pt`.
+    \item `answer outside the box`, or `answer out of the box` (or even omit `the`): enables another implementation for printing the answer that does not involve putting it into a colored box. This would be useful if the answers contain many long pieces of code while you still want the pages to break normally.
   \end{itemize}
 
 ?
@@ -135,8 +136,9 @@
   [Code]
   Due to the current implementation of this document class, it is unfortunate that you cannot directly insert source code in your document. There are some workarounds, though.
   \begin{itemize}
-    \item For *displayed* code, stored the code into a separate file, and then use `\textequalsign\textequalsign{} \{\meta{file name}\}` to print~it. You may also use an optional argument like `\textequalsign\textequalsign{} [\meta{language}] \{\meta{file name}\}` to select the language of your code.
     \item For *inline* code, you may simply write it between two backticks `\textbacktick\meta{code}\textbacktick`, similar to the Markdown syntax. However, be aware that special characters need to be escaped, for example, `\textbackslash` should be written as `\textbackslash textbackslash`, `\{` should be written as `\textbackslash\{`, `\%` should be written as `\textbackslash\%`, etc.
+    \item For *displayed* code, stored the code into a separate file, and then use `\textequalsign\textequalsign{} \{\meta{file name}\}` to print~it. You may also use an optional argument like `\textequalsign\textequalsign{} [\meta{language}] \{\meta{file name}\}` to select the language of your code.
+    \QANote{If the answers contain many long pieces of code, you may consider using the class option `answer outside the box`.}
   \end{itemize}
 
   [Sections]
@@ -235,7 +237,8 @@
 
   \begin{itemize}
     \item Currently, the code highlight is done by the package `listings`. Due to its own limitations, the result is still far from satisfactory. Using `minted` instead could improve the situation, but this would require `-shell-escape` and some external tweaking, thus it would still take some effort to make it work with the current document class.
-    \item The code block containing long piece of code usually won't properly break across the page (which is essentially why this documentation and the demo documents enabled the `scroll` mode).
+    % \item The code block containing long piece of code usually won't properly break across the page (which is essentially why this documentation and the demo documents enabled the `scroll` mode).
+    %% 2023-11-05, solved with the new option "answer outside the box".
     \item Due to the current implementation, though it is already possible to automatically adopt the identifiers and labels for supported languages, you still need to use the identifiers `Q`, `A` and `N` when setting them.
     \item Currently, for typesetting questions and answers, the text is in fact being put into some sort of `description` list. As a result, the level of lists might be slightly messed up, which could sometimes lead to issues with the list labels.
   \end{itemize}

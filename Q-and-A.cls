@@ -33,6 +33,20 @@
     , ChatGPT~dark      .meta:n             = { theme = ChatGPT-dark  }
     , ChatGPT dark      .meta:n             = { theme = ChatGPT-dark  }
 
+    , answer-outside-the-box .bool_set:N    = \l__QA_answer_outside_the_box_bool
+    , answer-outside-the-box .initial:n     = { false }
+    , answer~outside~the~box .bool_set:N    = \l__QA_answer_outside_the_box_bool
+    , answer outside the box .bool_set:N    = \l__QA_answer_outside_the_box_bool
+    , answer-outside-box     .bool_set:N    = \l__QA_answer_outside_the_box_bool
+    , answer~outside~box     .bool_set:N    = \l__QA_answer_outside_the_box_bool
+    , answer outside box     .bool_set:N    = \l__QA_answer_outside_the_box_bool
+    , answer-out-of-the-box  .bool_set:N    = \l__QA_answer_outside_the_box_bool
+    , answer~out~of~the~box  .bool_set:N    = \l__QA_answer_outside_the_box_bool
+    , answer out of the box  .bool_set:N    = \l__QA_answer_outside_the_box_bool
+    , answer-out-of-box      .bool_set:N    = \l__QA_answer_outside_the_box_bool
+    , answer~out~of~box      .bool_set:N    = \l__QA_answer_outside_the_box_bool
+    , answer out of box      .bool_set:N    = \l__QA_answer_outside_the_box_bool
+
     , unknown     .code:n       = {
                                     \PassOptionsToClass { \CurrentOption } { minimart }
                                     \PassOptionsToClass { \CurrentOption } { einfart }
@@ -72,7 +86,7 @@
 
 \colorlet{paper}{QA-A-back}
 \colorlet{main-text}{QA-A-text}
-\colorlet{emph-text}{QA-A-text}
+\colorlet{emph-text}{QA-A-emph}
 
 \str_if_eq:onT { \l__QA_theme_str } { ChatGPT-dark }
   {
@@ -228,6 +242,8 @@
     after={\vspace{-1mm}},
     sharp~corners,
     frame~hidden,
+    top=1em,
+    bottom=1em,
     left=1em,
     right=4em,
   }
@@ -340,15 +356,19 @@
 \tl_new:N \g_QA_local_content_tl
 \NewDocumentCommand \QAtext { +m }
   {
+    \group_begin:
     \tl_gset:Nn \g_QA_local_content_tl { #1 }
     \QA_parse_content:N \g_QA_local_content_tl
     \tl_use:N \g_QA_local_content_tl
+    \group_end:
   }
 
 \NewDocumentCommand \QAInput { m }
   {
     \file_get:nnN { #1 } { } \l_tmpa_tl
     \exp_args:No \QAtext { \l_tmpa_tl }
+    % Currently, for some reason, the following adjustment is needed
+    \vspace{-2\parskip}
   }
 \NewDocumentCommand \QAInclude { m }
   {
@@ -538,10 +558,12 @@
 
 \NewDocumentCommand \QASepLine { O{.75pt} }
   {
+    \par
     \vspace*{-.5\baselineskip}
     \noindent
     \hspace*{-\paperwidth}
     \makebox[\linewidth]{\color{QA-sep-line}\rule{4\paperwidth}{#1}}
+    \par
   }
 
 \NewDocumentEnvironment { QA_void } { } { } { }
@@ -622,6 +644,40 @@
   }
   {
     \end{tcolorbox}
+  }
+
+\bool_if:NT \l__QA_answer_outside_the_box_bool
+  {
+    \colorlet{paper}{QA-A-back}
+    \colorlet{main-text}{QA-A-text}
+    \colorlet{emph-text}{QA-A-emph}
+
+    \projlib_paper_set_page_color:n { paper }
+    \projlib_paper_set_text_color:n { main-text }
+
+    \RenewDocumentEnvironment { QA_A } { D<>{} }
+      {
+        \color{QA-A-text}
+        \vspace{1em}
+        \exp_args:No \str_if_in:nnT { \l__QA_theme_str } { ChatGPT }
+          {
+            \vspace{1em}
+            \sffamily
+            \onehalfspacing
+            \vspace{-.5\parskip}
+          }
+        \vspace{-.5\parskip}
+        \begin{QA-entry}[leftmargin=.5mm, itemindent=0pt, labelsep=\l_QA_list_labelsep_dim, labelwidth=3em]
+          \exp_args:No \str_if_in:nnT { \l__QA_theme_str } { ChatGPT }
+            { \parskip=2\parskip }
+          \item[\hfill\color{QA-A-text!33!QA-A-back}\l_QA_logo_code_A_tl]
+      }
+      {
+        \end{QA-entry}
+        \vspace{1em}
+        \exp_args:No \str_if_in:nnT { \l__QA_theme_str } { ChatGPT }
+          { \vspace{1em} }
+      }
   }
 
 \NewDocumentCommand \SetLogoCode { O{void} m }
@@ -916,8 +972,10 @@
                     % Directly put the current line into the output stream
                     \regex_replace_all:nnN { ⚛ } { } \l_QA_tmp_tl
                     \regex_replace_once:nnN { ❄️ } { } \l_QA_tmp_tl
-                    \tl_gput_right:No #1 { \l_QA_tmp_tl }
+                    \tl_gput_right:No #1 { \l_QA_tmp_tl \par }
                     \tl_clear:N \l_QA_tmp_tl
+                    % Reset the current type (!!this certainly breaks the usual behavior of \input and \include!!)
+                    \tl_set:Nn \l__QA_current_type_tl { void }
                   }
                   {
                     % Do nothing
@@ -1049,6 +1107,7 @@
     \hook_gput_code:nnn { enddocument } { Q-and-A }
       {
         \end { Q-and-A }
+        \vspace{-1mm}
         \egroup
         \dimen0=\dp0
         \pdfpageheight=\dimexpr\ht0\relax
@@ -1065,7 +1124,7 @@
       % top=.75in,bottom=.75in,
       top=0in,bottom=0in,
       % left=.75in,right=.66in,
-      left=.75in,right=4em,
+      left=\l_QA_list_indentation_dim+1em,right=4em,
       marginparsep=.75em,
       marginparwidth=.75in,
       footnotesep=2em plus 2pt minus 2pt,
