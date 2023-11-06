@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {Q-and-A}
-  {2023/11/05} {}
+  {2023/11/07} {}
   {Document class for typesetting Q&A conversation}
 
 \keys_define:nn { Q-and-A }
@@ -32,6 +32,22 @@
     , ChatGPT-dark      .meta:n             = { theme = ChatGPT-dark  }
     , ChatGPT~dark      .meta:n             = { theme = ChatGPT-dark  }
     , ChatGPT dark      .meta:n             = { theme = ChatGPT-dark  }
+
+    , numbered-question .bool_set:N         = \l__QA_numbered_question_bool
+    , numbered-question .initial:n          = { false }
+    , numbered~question .bool_set:N         = \l__QA_numbered_question_bool
+    , numbered question .bool_set:N         = \l__QA_numbered_question_bool
+    , question-number   .bool_set:N         = \l__QA_numbered_question_bool
+    , question~number   .bool_set:N         = \l__QA_numbered_question_bool
+    , question number   .bool_set:N         = \l__QA_numbered_question_bool
+
+    , numbered-answer   .bool_set:N         = \l__QA_numbered_answer_bool
+    , numbered-answer   .initial:n          = { false }
+    , numbered~answer   .bool_set:N         = \l__QA_numbered_answer_bool
+    , numbered answer   .bool_set:N         = \l__QA_numbered_answer_bool
+    , answer-number     .bool_set:N         = \l__QA_numbered_answer_bool
+    , answer~number     .bool_set:N         = \l__QA_numbered_answer_bool
+    , answer number     .bool_set:N         = \l__QA_numbered_answer_bool
 
     , answer-outside-the-box .bool_set:N    = \l__QA_answer_outside_the_box_bool
     , answer-outside-the-box .initial:n     = { false }
@@ -684,36 +700,84 @@
   {
     \tl_set:cn { l_QA_logo_code_ #1 _tl } { #2 }
   }
+
 % Set default logo code
 \SetLogoCode[Q]{\textbf{\l_QA_label_Q_tl}}
 \SetLogoCode[A]{\textbf{\l_QA_label_R_tl}}
-\projlib_langauge_define_multilingual_text:Nn \l_QA_label_Q_tl
+
+\newcounter{QA_Q}
+\newcounter{QA_A}
+\NewDocumentCommand \QAShowCounter { m }
   {
-    , EN = { Q\,: }
-    , FR = { Q:   }
-    , DE = { F\,: }
-    , IT = { D\,: }
-    , PT = { P\,: }
-    , BR = { P\,: }
-    , ES = { P\,: }
-    , CN = { Q\,: }
-    , TC = { Q\,: }
-    , JP = { Q\,: }
-    , RU = { B\,: }
+    \stepcounter{QA_#1}
+    \tl_use:c {theQA_#1}
   }
-\projlib_langauge_define_multilingual_text:Nn \l_QA_label_R_tl
+
+\bool_if:NTF \l__QA_numbered_answer_bool
   {
-    , EN = { A\,: }
-    , FR = { R:   }
-    , DE = { A\,: }
-    , IT = { R\,: }
-    , PT = { R\,: }
-    , BR = { R\,: }
-    , ES = { R\,: }
-    , CN = { A\,: }
-    , TC = { A\,: }
-    , JP = { A\,: }
-    , RU = { O\,: }
+    \projlib_langauge_define_multilingual_text:Nn \l_QA_label_Q_tl
+      {
+        , EN = { Q \QAShowCounter{Q} \,: }
+        , FR = { Q \QAShowCounter{Q} :   }
+        , DE = { F \QAShowCounter{Q} \,: }
+        , IT = { D \QAShowCounter{Q} \,: }
+        , PT = { P \QAShowCounter{Q} \,: }
+        , BR = { P \QAShowCounter{Q} \,: }
+        , ES = { P \QAShowCounter{Q} \,: }
+        , CN = { Q \QAShowCounter{Q} \,: }
+        , TC = { Q \QAShowCounter{Q} \,: }
+        , JP = { Q \QAShowCounter{Q} \,: }
+        , RU = { B \QAShowCounter{Q} \,: }
+      }
+  }
+  {
+    \projlib_langauge_define_multilingual_text:Nn \l_QA_label_Q_tl
+      {
+        , EN = { Q\,: }
+        , FR = { Q:   }
+        , DE = { F\,: }
+        , IT = { D\,: }
+        , PT = { P\,: }
+        , BR = { P\,: }
+        , ES = { P\,: }
+        , CN = { Q\,: }
+        , TC = { Q\,: }
+        , JP = { Q\,: }
+        , RU = { B\,: }
+      }
+  }
+\bool_if:NTF \l__QA_numbered_question_bool
+  {
+    \projlib_langauge_define_multilingual_text:Nn \l_QA_label_R_tl
+      {
+        , EN = { A \QAShowCounter{A} \,: }
+        , FR = { R \QAShowCounter{A} :   }
+        , DE = { A \QAShowCounter{A} \,: }
+        , IT = { R \QAShowCounter{A} \,: }
+        , PT = { R \QAShowCounter{A} \,: }
+        , BR = { R \QAShowCounter{A} \,: }
+        , ES = { R \QAShowCounter{A} \,: }
+        , CN = { A \QAShowCounter{A} \,: }
+        , TC = { A \QAShowCounter{A} \,: }
+        , JP = { A \QAShowCounter{A} \,: }
+        , RU = { O \QAShowCounter{A} \,: }
+      }
+  }
+  {
+    \projlib_langauge_define_multilingual_text:Nn \l_QA_label_R_tl
+      {
+        , EN = { A\,: }
+        , FR = { R:   }
+        , DE = { A\,: }
+        , IT = { R\,: }
+        , PT = { R\,: }
+        , BR = { R\,: }
+        , ES = { R\,: }
+        , CN = { A\,: }
+        , TC = { A\,: }
+        , JP = { A\,: }
+        , RU = { O\,: }
+      }
   }
 
 \prop_new:N \g__QA_prefix_type_prop

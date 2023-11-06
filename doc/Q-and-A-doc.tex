@@ -1,9 +1,11 @@
 \documentclass[%11pt,
   use style = classical,
+  % numbered answer,
+  % numbered question,
   scroll,
 ]{Q-and-A}
 
-\def\PackageVersion{2023/11/05}
+\def\PackageVersion{2023/11/07}
 \def\PackageSubVersion{}
 
 \newcommand{\QApackage}{{\normalfont\textsf{Q-and-A}}}
@@ -69,9 +71,11 @@
   The available class options include:
   \begin{itemize}
     \item Font size options such as `11pt`, `12pt`.
-    \item `scroll`: turns the scroll mode on, which generates a single-page pdf similar to a long screenshot. It is recommended to use this option if your document contains some large piece of code.
+    \item `scroll`: turn the scroll mode on, which generates a single-page pdf similar to a long screenshot. It is recommended to use this option if your document contains some large piece of code.
     \item `use theme = \meta{theme}`: use the selected theme, available choices include: `default` (like the current document), `ChatGPT-light` and `ChatGPT-dark` (see the demo documents).
-    \item `answer outside the box`, or `answer out of the box` (or even omit `the`): enables another implementation for printing the answer that does not involve putting it into a colored box. This would be useful if the answers contain many long pieces of code while you still want the pages to break normally.
+    \item `numbered question`, or `question number`: enable the numbering of questions.
+    \item `numbered answer`, or `answer number`: enable the numbering of answers.
+    \item `answer outside the box`, or `answer out of the box` (or even omit `the`): enable another implementation for printing the answer that does not involve putting it into a colored box. This would be useful if the answers contain many long pieces of code while you still want the pages to break normally.
   \end{itemize}
 
 ?
@@ -221,8 +225,14 @@
     \item Use `\textbackslash SetLogoCode\{Q\}\{\meta{logo code}\}` to set the labels for questions.
     \item Use `\textbackslash SetLogoCode\{A\}\{\meta{logo code}\}` to set the labels for answers.
   \end{itemize}
-  Here, \meta{logo code} is the actual code for displaying the corresponding label. For example, the default label for questions is preset via `\textbackslash SetLogoCode\{Q\}\{\textbackslash textbf\{Q\textbackslash,:\}\}`.
-  >>> In the demo document, you can find an example on how to use this command to specify a logo for each role in the conversation.
+  Here, \meta{logo code} is the actual code for displaying the corresponding label. For example, the default label for (unnumbered) questions is preset via `\textbackslash SetLogoCode\{Q\}\{\textbackslash textbf\{Q\textbackslash,:\}\}`.
+  \QANote{In the demo document, you can find an example on how to use this command to specify a logo for each role in the conversation.}
+  If you wish to include the question number or answer number, you may use the command `\textbackslash QAShowCounter`:
+  \begin{itemize}
+    \item Use `\textbackslash QAShowCounter\{Q\}` to step the counter of question and print it.
+    \item Use `\textbackslash QAShowCounter\{A\}`  to step the counter of answer and print it.
+  \end{itemize}
+  For example, the default label for numbered questions is preset by adding `\textbackslash QAShowCounter\{Q\}` to the unnumbered version: `\textbackslash SetLogoCode\{Q\}\{\textbackslash textbf\{Q\textbackslash QAShowCounter\{Q\}\textbackslash,:\}\}`.
 
 
 ##+ {Known Issues}
