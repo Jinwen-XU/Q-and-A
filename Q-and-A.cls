@@ -169,7 +169,7 @@
   }
 
 \newlist { QA-entry } { description } { 1 }
-\setlist [ QA-entry ] { font = \normalfont\sffamily, leftmargin = \l_QA_list_indentation_dim, labelsep = \l_QA_list_labelsep_dim, labelwidth=!, parsep=\parskip }
+\setlist [ QA-entry ] { font = \normalfont\sffamily, leftmargin = \l_QA_list_indentation_dim, labelsep = \l_QA_list_labelsep_dim, labelwidth=3em, itemindent=0pt, parsep=\parskip }
 \renewcommand{\descriptionlabel}[1]{#1}
 
 \bool_new:N \l__QA_inside_list_bool
@@ -713,7 +713,7 @@
     \tl_use:c {theQA_#1}
   }
 
-\bool_if:NTF \l__QA_numbered_answer_bool
+\bool_if:NTF \l__QA_numbered_question_bool
   {
     \projlib_langauge_define_multilingual_text:Nn \l_QA_label_Q_tl
       {
@@ -724,8 +724,8 @@
         , PT = { P \QAShowCounter{Q} \,: }
         , BR = { P \QAShowCounter{Q} \,: }
         , ES = { P \QAShowCounter{Q} \,: }
-        , CN = { Q \QAShowCounter{Q} \,: }
-        , TC = { Q \QAShowCounter{Q} \,: }
+        , CN = { 问 \QAShowCounter{Q} \,：\hspace{-.5em} }
+        , TC = { 問 \QAShowCounter{Q} \,：\hspace{-.5em} }
         , JP = { Q \QAShowCounter{Q} \,: }
         , RU = { B \QAShowCounter{Q} \,: }
       }
@@ -740,13 +740,13 @@
         , PT = { P\,: }
         , BR = { P\,: }
         , ES = { P\,: }
-        , CN = { Q\,: }
-        , TC = { Q\,: }
+        , CN = { 问\,：\hspace{-.33em} }
+        , TC = { 問\,：\hspace{-.33em} }
         , JP = { Q\,: }
         , RU = { B\,: }
       }
   }
-\bool_if:NTF \l__QA_numbered_question_bool
+\bool_if:NTF \l__QA_numbered_answer_bool
   {
     \projlib_langauge_define_multilingual_text:Nn \l_QA_label_R_tl
       {
@@ -757,8 +757,8 @@
         , PT = { R \QAShowCounter{A} \,: }
         , BR = { R \QAShowCounter{A} \,: }
         , ES = { R \QAShowCounter{A} \,: }
-        , CN = { A \QAShowCounter{A} \,: }
-        , TC = { A \QAShowCounter{A} \,: }
+        , CN = { 答 \QAShowCounter{A} \,：\hspace{-.5em} }
+        , TC = { 答 \QAShowCounter{A} \,：\hspace{-.5em} }
         , JP = { A \QAShowCounter{A} \,: }
         , RU = { O \QAShowCounter{A} \,: }
       }
@@ -773,8 +773,8 @@
         , PT = { R\,: }
         , BR = { R\,: }
         , ES = { R\,: }
-        , CN = { A\,: }
-        , TC = { A\,: }
+        , CN = { 答\,：\hspace{-.33em} }
+        , TC = { 答\,：\hspace{-.33em} }
         , JP = { A\,: }
         , RU = { O\,: }
       }
@@ -861,16 +861,16 @@
 \AddLanguageSetting [ CN ]
   {
     \QARemoveAllPrefix
-    \QASetTypePrefix { Q } { 问： , Q: , ? , ？ }
-    \QASetTypePrefix { A } { 答： , A: , : , ： }
-    \QASetTypePrefix { N } { 注： , N: , " , “ , ” , 「 }
+    \QASetTypePrefix { Q } { 问： , 问: , Q: , ? , ？ }
+    \QASetTypePrefix { A } { 答： , 答: , A: , : , ： }
+    \QASetTypePrefix { N } { 注： , 注: , N: , " , “ , ” , 「 }
   }
 \AddLanguageSetting [ TC ]
   {
     \QARemoveAllPrefix
-    \QASetTypePrefix { Q } { 問： , Q: , ? , ？ }
-    \QASetTypePrefix { A } { 答： , A: , : , ： }
-    \QASetTypePrefix { N } { 註： , N: , " , “ , ” , 「 }
+    \QASetTypePrefix { Q } { 問： , 問: , Q: , ? , ？ }
+    \QASetTypePrefix { A } { 答： , 答: , A: , : , ： }
+    \QASetTypePrefix { N } { 註： , 註: , N: , " , “ , ” , 「 }
   }
 \AddLanguageSetting [ JP ]
   {
