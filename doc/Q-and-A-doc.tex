@@ -5,8 +5,8 @@
   scroll,
 ]{Q-and-A}
 
-\def\PackageVersion{2023/11/07}
-\def\PackageSubVersion{a}
+\def\PackageVersion{2023/11/08}
+\def\PackageSubVersion{}
 
 \newcommand{\QApackage}{{\normalfont\textsf{Q-and-A}}}
 
@@ -249,6 +249,7 @@
     \item Currently, the code highlight is done by the package `listings`. Due to its own limitations, the result is still far from satisfactory. Using `minted` instead could improve the situation, but this would require `-shell-escape` and some external tweaking, thus it would still take some effort to make it work with the current document class.
     \item Due to the current implementation, one cannot direct write code (either inline or displayed) within the text (alternative solution has been proposed above).
     \item Due to the current implementation, one may not be able to directly write certain characters (such as `\textasterisk`) in the text, this might be especially inconvenient in math mode (temporary alternative solution has been proposed above).
+    \item Due to the current implementation, the method for inputting and including subfiles doesn't really work like `\textbackslash input` and `\textbackslash include`. In particular, the current type of conversation would be reset, this might cause some confusion in certain cases.
     % \item The code block containing long piece of code usually won't properly break across the page (which is essentially why this documentation and the demo documents enabled the `scroll` mode).
     %% 2023-11-05, solved with the new option "answer outside the box".
     \item Due to the current implementation, though it is already possible to automatically adopt the identifiers and labels for supported languages, you still need to use the identifiers `Q`, `A` and `N` when setting them.

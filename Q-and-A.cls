@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {Q-and-A}
-  {2023/11/07a} {}
+  {2023/11/08} {}
   {Document class for typesetting Q&A conversation}
 
 \keys_define:nn { Q-and-A }
@@ -380,12 +380,19 @@
     \group_end:
   }
 
+\def\QAendmark{}
 \NewDocumentCommand \QAInput { m }
   {
     \file_get:nnN { #1 } { } \l_tmpa_tl
     \exp_args:No \QAtext { \l_tmpa_tl }
     % Currently, for some reason, the following adjustment is needed
-    \vspace{-2\parskip}
+    \peek_regex:nF { (\ *)? (\c{par}*)? (\ *)? \c{QAendmark} }
+      {
+        \peek_meaning:NF \QAendmark
+          {% only do this in the middle of the text
+            \vspace{-2\parskip}
+          }
+      }
   }
 \NewDocumentCommand \QAInclude { m }
   {
@@ -1135,6 +1142,7 @@
           }
       }
     \__QA_put_current_content:n { #1 }
+    \tl_gput_right:Nn #1 { \QAendmark }
   }
 
 \box_new:N \l__QA_tmp_box
