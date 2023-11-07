@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {Q-and-A}
-  {2023/11/07} {}
+  {2023/11/07a} {}
   {Document class for typesetting Q&A conversation}
 
 \keys_define:nn { Q-and-A }
@@ -320,6 +320,7 @@
     NewDocumentCommand,NewDocumentEnvironment,
     includegraphics,
     definecolor, colorlet, color, textcolor,
+    tikz, draw, fill, filldraw, node, clip,
   }
   {% LaTeX3 commands
   }

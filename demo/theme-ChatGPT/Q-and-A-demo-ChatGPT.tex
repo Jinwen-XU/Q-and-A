@@ -4,9 +4,40 @@
   scroll,
 ]{Q-and-A}
 
-
-\SetLogoCode[Q]{\smash{\raisebox{-.45\baselineskip}{\includegraphics[height=1.35\baselineskip]{Q-and-A-demo-logo-User}}}}
-\SetLogoCode[A]{\smash{\raisebox{-.45\baselineskip}{\includegraphics[height=1.35\baselineskip]{Q-and-A-demo-logo-ChatGPT}}}}
+% The User Logo
+\SetLogoCode[Q]{%
+  \smash{\raisebox{-.65\baselineskip}{%
+    \begin{tikzpicture}
+      \node [inner sep=0pt] at (0,0) {\includegraphics[height=1.5\baselineskip]{Q-and-A-demo-logo-User}};
+      \draw [QA-Q-back, rounded corners=.15\baselineskip, line width=.2\baselineskip]
+        (current bounding box.north west) --
+        (current bounding box.north east) --
+        (current bounding box.south east) --
+        (current bounding box.south west) -- cycle;
+      \clip (current bounding box.north west) --
+        (current bounding box.north east) --
+        (current bounding box.south east) --
+        (current bounding box.south west) -- cycle;
+    \end{tikzpicture}%
+  }\hspace{-.25em}%
+  }}
+% The ChatGPT Logo
+\SetLogoCode[A]{%
+  \smash{\raisebox{-.65\baselineskip}{%
+    \begin{tikzpicture}
+      \node [inner sep=0pt] at (0,0) {\includegraphics[height=1.5\baselineskip]{Q-and-A-demo-logo-ChatGPT}};
+      \draw [QA-A-back, rounded corners=.15\baselineskip, line width=.2\baselineskip]
+        (current bounding box.north west) --
+        (current bounding box.north east) --
+        (current bounding box.south east) --
+        (current bounding box.south west) -- cycle;
+      \clip (current bounding box.north west) --
+        (current bounding box.north east) --
+        (current bounding box.south east) --
+        (current bounding box.south west) -- cycle;
+    \end{tikzpicture}%
+  }\hspace{-.25em}%
+  }}
 
 
 \begin{document}
