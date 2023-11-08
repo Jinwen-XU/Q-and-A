@@ -59,3 +59,6 @@ The scroll mode is achieved by directly accessing `\pdfpageheight` (pdfTeX and X
 # License
 
 This work is released under the LaTeX Project Public License, v1.3c or later.
+
+The ChatGPT logo image used in the demo document is *not* an official version. It has been created by the author by overlaying the OpenAI logo onto a colored background, with the background color being extracted directly from the ChatGPT interface using a color picker tool. This was done solely for the purpose of replicating the layout of the actual ChatGPT interface.
+The author does not assert any copyright claims or ownership over the design of this logo. Users are kindly advised to replace this logo image in their respective documents with their own authorized version.
