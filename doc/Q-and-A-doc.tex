@@ -5,7 +5,7 @@
   scroll,
 ]{Q-and-A}
 
-\def\PackageVersion{2023/11/08}
+\def\PackageVersion{2023/11/09}
 \def\PackageSubVersion{}
 
 \newcommand{\QApackage}{{\normalfont\textsf{Q-and-A}}}
@@ -166,6 +166,8 @@
 
   And don't forget that you are still using \LaTeX, so images, tables and lists can be written as usual.
 
+  >>> Currently, the default style for showing tables has not been settled (since the color configuration for tables with or without headers would be slightly different). As a temporary solution, it is recommended for you to consult the several nice answers of this question: \url{https://tex.stackexchange.com/q/10224}.
+
 
 ##+ {Cautions}
 
@@ -248,6 +250,7 @@
   \begin{itemize}
     \item Currently, the code highlight is done by the package `listings`. Due to its own limitations, the result is still far from satisfactory. Using `minted` instead could improve the situation, but this would require `-shell-escape` and some external tweaking, thus it would still take some effort to make it work with the current document class.
     \item Due to the current implementation, one cannot direct write code (either inline or displayed) within the text (alternative solution has been proposed above).
+    \item Due to the current implementation, when displaying the code, one may not be able to write some of the language name like `C\#` directly, but has to write an alternative name such as `csharp`.
     \item Due to the current implementation, one may not be able to directly write certain characters (such as `\textasterisk`) in the text, this might be especially inconvenient in math mode (temporary alternative solution has been proposed above).
     \item Due to the current implementation, the method for inputting and including subfiles doesn't really work like `\textbackslash input` and `\textbackslash include`. In particular, the current type of conversation would be reset, this might cause some confusion in certain cases.
     % \item The code block containing long piece of code usually won't properly break across the page (which is essentially why this documentation and the demo documents enabled the `scroll` mode).

@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {Q-and-A}
-  {2023/11/08} {}
+  {2023/11/09} {}
   {Document class for typesetting Q&A conversation}
 
 \keys_define:nn { Q-and-A }
@@ -281,8 +281,25 @@
 \definecolor{QA-code-keyword}{RGB}{ 47,148,210}
 \definecolor{QA-code-comment}{RGB}{128,128,128}
 \definecolor{QA-code-string }{RGB}{  5,165,126}
+\lstdefinelanguage{plaintext}{}
+\lstdefinelanguage{JavaScript}{% https://tex.stackexchange.com/q/89574
+  keywords={abstract, any, as, boolean, break, case, catch, class, console,
+    const, continue, debugger, declare, default, delete, do, else, enum, export,
+    extends, false, finally, for, from, function, get, if, implements, import, in,
+    infer, instanceof, interface, keyof, let, module, namespace, never, new, null,
+    number, object, package, private, protected, public, readonly, require, return,
+    set, static, string, super, switch, symbol, this, throw, true, try, type, typeof,
+    undefined, unique, unknown, var, void, while, with, yield},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]",
+  sensitive=true
+}
+\lstalias[]{txt}[]{plaintext}
 \lstalias[]{code}[LaTeX]{tex}
 \lstalias[]{latex}[LaTeX]{tex}
+\lstalias[]{Csharp}[Sharp]{C}
 % \lstloadlanguages{[LaTeX]TeX}
 \lstset{
   basicstyle   = \small\normalfont\ttfamily,
