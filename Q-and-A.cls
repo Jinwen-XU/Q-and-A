@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {Q-and-A}
-  {2023/11/09} {}
+  {2023/11/11} {}
   {Document class for typesetting Q&A conversation}
 
 \keys_define:nn { Q-and-A }
@@ -1139,11 +1139,11 @@
 
         \regex_replace_all:nnN
           { \*\*\* (.*?) \*\*\* }
-          { \c{textbf} { \c{emph} {\1} } }
+          { \c{QAEmph} { \c{emph} {\1} } }
           \l_QA_tmp_tl
         \regex_replace_all:nnN
           { \*\* (.*?) \*\* }
-          { \c{textbf} {\1} }
+          { \c{QAEmph} {\1} }
           \l_QA_tmp_tl
         \regex_replace_all:nnN
           { \* (.*?) \* }
