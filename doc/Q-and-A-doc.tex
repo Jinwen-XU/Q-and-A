@@ -135,13 +135,13 @@
   \begin{itemize}
     \item For centered image, the caption can be written via `\textgreater\textgreater{} \meta{caption text}`.
   \end{itemize}
-  \QANote{Currently, the `\meta{caption text}` shall be directly printed in the center. You may wish to add a pair of parentheses around it.}
+  % \QANote{Currently, the `\meta{caption text}` shall be directly printed in the center. You may wish to add a pair of parentheses around it.}
 
   [Code]
   Due to the current implementation of this document class, it is unfortunate that you cannot directly insert source code in your document. There are some workarounds, though.
   \begin{itemize}
     \item For *inline* code, you may simply write it between two backticks `\textbacktick\meta{code}\textbacktick`, similar to the Markdown syntax. However, be aware that special characters need to be escaped, for example, `\textbackslash` should be written as `\textbackslash textbackslash`, `\{` should be written as `\textbackslash\{`, `\%` should be written as `\textbackslash\%`, etc.
-    \item For *displayed* code, stored the code into a separate file, and then use `\textequalsign\textequalsign{} \{\meta{file name}\}` to print~it. You may also use an optional argument like `\textequalsign\textequalsign{} [\meta{language}] \{\meta{file name}\}` to select the language of your code.
+    \item For *displayed* code, store the code into a separate file, and then use `\textequalsign\textequalsign{} \{\meta{file name}\}` to print~it. You may also use an optional argument like `\textequalsign\textequalsign{} [\meta{language}] \{\meta{file name}\}` to select the language of your code.
     \QANote{If the answers contain many long pieces of code, you may consider using the class option `answer outside the box`.}
   \end{itemize}
 
@@ -165,6 +165,8 @@
   \medskip
 
   And don't forget that you are still using \LaTeX, so images, tables and lists can be written as usual.
+
+  \medskip
 
   >>> Currently, the default style for showing tables has not been settled (since the color configuration for tables with or without headers would be slightly different). As a temporary solution, it is recommended for you to consult the several nice answers of this question: \url{https://tex.stackexchange.com/q/10224}.
 
@@ -260,7 +262,7 @@
   \end{itemize}
 
 
-##+ {Get Support}
+##+ {Getting Support}
 
 ?
   What should I do if I encounter any problem?
