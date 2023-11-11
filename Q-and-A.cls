@@ -282,6 +282,20 @@
 \definecolor{QA-code-comment}{RGB}{128,128,128}
 \definecolor{QA-code-string }{RGB}{  5,165,126}
 \lstdefinelanguage{plaintext}{}
+\lstdefinelanguage{Markdown}{
+  keywords={
+    \#,\#\#,\#\#\#,\#\#\#\#,\#\#\#\#\#,\#\#\#\#\#\#,
+    >,
+    ---,----,-----,------,-------,--------,---------,
+  },
+  alsoletter={\#,>,*,-,`},
+  moredelim=[s][\color{QA-code-string}\ttfamily]{`}{`},
+  moredelim=[s][\itshape]{*}{*},
+  moredelim=[s][\bfseries]{**}{**},
+  moredelim=[s][\bfseries\itshape]{***}{***},
+  morecomment=[s]{<!--}{-->},
+  sensitive=true
+}
 \lstdefinelanguage{JavaScript}{% https://tex.stackexchange.com/q/89574
   keywords={abstract, any, as, boolean, break, case, catch, class, console,
     const, continue, debugger, declare, default, delete, do, else, enum, export,
