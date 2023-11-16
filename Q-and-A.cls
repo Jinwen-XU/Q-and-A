@@ -12,13 +12,21 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {Q-and-A}
-  {2023/11/11} {}
+  {2023/11/17} {}
   {Document class for typesetting Q&A conversation}
 
 \keys_define:nn { Q-and-A }
   {
-    , scroll      .bool_set:N   = \l__QA_scroll_bool
-    , scroll      .initial:n    = { false }
+    , scroll            .bool_set:N         = \l__QA_scroll_bool
+    , scroll            .initial:n          = { false }
+
+    , enlarge-left-margin-by  .dim_set:N    = \l__QA_extra_left_margin_dim
+    , enlarge-left-margin-by  .initial:n    = { 0pt }
+    , enlarge~left~margin~by  .dim_set:N    = \l__QA_extra_left_margin_dim
+    , enlarge left margin by  .dim_set:N    = \l__QA_extra_left_margin_dim
+    , increase-left-margin-by .dim_set:N    = \l__QA_extra_left_margin_dim
+    , increase~left~margin~by .dim_set:N    = \l__QA_extra_left_margin_dim
+    , increase left margin by .dim_set:N    = \l__QA_extra_left_margin_dim
 
     , theme             .str_set:N          = \l__QA_theme_str
     , theme             .initial:n          = { default }
@@ -157,19 +165,19 @@
 \dim_new:N \l_QA_item_indentation_dim
 \dim_set:Nn \l_QA_item_indentation_dim { 1.5em }
 \dim_new:N \l_QA_list_indentation_dim
-\dim_set:Nn \l_QA_list_indentation_dim { 3em }
+\dim_set:Nn \l_QA_list_indentation_dim { 3em + \l__QA_extra_left_margin_dim }
 \dim_new:N \l_QA_list_labelsep_dim
 \dim_set:Nn \l_QA_list_labelsep_dim { 1em }
 
 \exp_args:No \str_if_in:nnT { \l__QA_theme_str } { ChatGPT }
   {
     \dim_set:Nn \l_QA_item_indentation_dim { .33em }
-    \dim_set:Nn \l_QA_list_indentation_dim { 4.5em }
+    \dim_set:Nn \l_QA_list_indentation_dim { 4.5em + \l__QA_extra_left_margin_dim }
     \dim_set:Nn \l_QA_list_labelsep_dim { 1.5em }
   }
 
 \newlist { QA-entry } { description } { 1 }
-\setlist [ QA-entry ] { font = \normalfont\sffamily, leftmargin = \l_QA_list_indentation_dim, labelsep = \l_QA_list_labelsep_dim, labelwidth=3em, itemindent=0pt, parsep=\parskip }
+\setlist [ QA-entry ] { font = \normalfont\sffamily, leftmargin = \l_QA_list_indentation_dim, labelsep = \l_QA_list_labelsep_dim, labelwidth=4em, itemindent=0pt, parsep=\parskip }
 \renewcommand{\descriptionlabel}[1]{#1}
 
 \bool_new:N \l__QA_inside_list_bool
@@ -464,7 +472,7 @@
   }
 \NewDocumentCommand \QAEnum { s m m }
   {
-    \tl_if_blank:nTF { #1 }
+    \tl_if_blank:nTF { #2 }
       {
         \tl_set:Nn \l_tmpa_tl { }
       }
