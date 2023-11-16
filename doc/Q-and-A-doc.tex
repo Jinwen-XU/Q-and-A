@@ -76,6 +76,7 @@
     \item `numbered question`, or `question number`: enable the numbering of questions.
     \item `numbered answer`, or `answer number`: enable the numbering of answers.
     \item `multiple question` and `multiple answer`: enable subcounter for questions and answers. This can also be enabled/disabled manually in the middle of the document, via `\textbackslash EnableMultipleQuestion` / `\textbackslash DisableMultipleQuestion` and `\textbackslash EnableMultipleAnswer` / `\textbackslash DisableMultipleAnswer`.
+    \item `smaller subcounter`: when `multiple question` (and/or `multiple answer`) is enabled, use this option to show the subcounter in a smaller size.
     \item `enlarge left margin by = \meta{length}`, or `increase left margin by = \meta{length}`: enlarge the left margin by the amount of `\meta{length}`. This would be useful if there are so many questions/answers that the numbering becomes too long to fit in the margin.
     \QANote{Here `\meta{length}` should be specified with absolute unit like `pt`, `cm`, `mm`, `in`, etc., but not with unit like `ex` or `em`.}
     \item `answer outside the box`, or `answer out of the box` (or even omit `the`): enable another implementation for printing the answer that does not involve putting it into a colored box. This would be useful if the answers contain many long pieces of code while you still want the pages to break normally.
@@ -240,6 +241,13 @@
     \item Use `\textbackslash QAShowCounter\{A\}`  to step the counter of answer and print it.
   \end{itemize}
   For example, the default label for numbered questions is preset by adding `\textbackslash QAShowCounter\{Q\}` to the unnumbered version: `\textbackslash SetLogoCode\{Q\}\{\textbackslash textbf\{Q\textbackslash QAShowCounter\{Q\}\textbackslash,:\}\}`.
+
+  [Controlling subcounters]
+  When using `\textbackslash QAShowCounter` to show a counter that contains a subcounter, it is possible to control the style and the separator of the subcounter:
+  \begin{itemize}
+    \item Use `\textbackslash QASetSubcounterStyle\{\meta{style code}\}` to define the style of the subcounter. For example, the class option `smaller subcounter` is equivalent to `\textbackslash QASetSubcounterStyle\{\textbackslash smaller\}`.
+    \item Use `\textbackslash QASetSubcounterSeparator\{\meta{separator}\}` to define the separator between the parent and child counters. By default it is `.`, but you may set it to, say, `-`.
+  \end{itemize}
 
 
 ##+ {Known Issues}

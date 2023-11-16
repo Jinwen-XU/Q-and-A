@@ -17,8 +17,8 @@
 
 \keys_define:nn { Q-and-A }
   {
-    , scroll            .bool_set:N         = \l__QA_scroll_bool
-    , scroll            .initial:n          = { false }
+    , scroll                  .bool_set:N   = \l__QA_scroll_bool
+    , scroll                  .initial:n    = { false }
 
     , enlarge-left-margin-by  .dim_set:N    = \l__QA_extra_left_margin_dim
     , enlarge-left-margin-by  .initial:n    = { 0pt }
@@ -66,6 +66,11 @@
     , multiple-answer   .initial:n          = { false }
     , multiple~answer   .bool_set:N         = \l__QA_multiple_answer_bool
     , multiple answer   .bool_set:N         = \l__QA_multiple_answer_bool
+
+    , smaller-subcounter     .bool_set:N    = \l__QA_smaller_subcounter_bool
+    , smaller-subcounter     .initial:n     = { false }
+    , smaller~subcounter     .bool_set:N    = \l__QA_smaller_subcounter_bool
+    , smaller subcounter     .bool_set:N    = \l__QA_smaller_subcounter_bool
 
     , answer-outside-the-box .bool_set:N    = \l__QA_answer_outside_the_box_bool
     , answer-outside-the-box .initial:n     = { false }
@@ -764,10 +769,35 @@
 
 \newcounter{QA_Q}
 \newcounter{QA_A}
+
+\def\QASubcounterStyle{}
+\def\QASubcounterSeparator{.}
+\NewDocumentCommand \QASetSubcounterStyle { m }
+  {
+    \def\QASubcounterStyle{#1}
+  }
+\NewDocumentCommand \QASetSubcounterSeparator { m }
+  {
+    \def\QASubcounterSeparator{#1}
+  }
+
+\bool_if:NT \l__QA_smaller_subcounter_bool
+  {
+    \QASetSubcounterStyle{\smaller}
+  }
+
+\cs_new_protected:Nn \QA_show_subcounter_with_style:n
+  {
+    \group_begin:
+    \tl_set:Nx \l_tmpa_tl { #1 }
+    \regex_replace_once:nnN { \. (.*) } { \c{QASubcounterStyle}{\c{QASubcounterSeparator}\1} } \l_tmpa_tl
+    \tl_use:N \l_tmpa_tl
+    \group_end:
+  }
 \NewDocumentCommand \QAShowCounter { m }
   {
     \stepcounter{QA_#1}
-    \tl_use:c {theQA_#1}
+    \QA_show_subcounter_with_style:n { \tl_use:c {theQA_#1} }
   }
 
 \newcounter{QA_Q_aux}
