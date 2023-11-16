@@ -57,6 +57,16 @@
     , answer~number     .bool_set:N         = \l__QA_numbered_answer_bool
     , answer number     .bool_set:N         = \l__QA_numbered_answer_bool
 
+    , multiple-question .bool_set:N         = \l__QA_multiple_question_bool
+    , multiple-question .initial:n          = { false }
+    , multiple~question .bool_set:N         = \l__QA_multiple_question_bool
+    , multiple question .bool_set:N         = \l__QA_multiple_question_bool
+
+    , multiple-answer   .bool_set:N         = \l__QA_multiple_answer_bool
+    , multiple-answer   .initial:n          = { false }
+    , multiple~answer   .bool_set:N         = \l__QA_multiple_answer_bool
+    , multiple answer   .bool_set:N         = \l__QA_multiple_answer_bool
+
     , answer-outside-the-box .bool_set:N    = \l__QA_answer_outside_the_box_bool
     , answer-outside-the-box .initial:n     = { false }
     , answer~outside~the~box .bool_set:N    = \l__QA_answer_outside_the_box_bool
@@ -759,6 +769,90 @@
     \stepcounter{QA_#1}
     \tl_use:c {theQA_#1}
   }
+
+\newcounter{QA_Q_aux}
+\newcounter{QA_A_aux}
+
+\bool_new:N \g__QA_Q_multiple_counter_already_enabled_bool
+\bool_new:N \g__QA_Q_multiple_counter_already_updated_bool
+\bool_gset_false:N \g__QA_Q_multiple_counter_already_enabled_bool
+\NewDocumentCommand \EnableMultipleQuestion { }
+  {
+    \bool_if:NF \g__QA_Q_multiple_counter_already_enabled_bool
+      {
+        \setcounter{QA_Q_aux}{\value{QA_Q}} % set the outer counter
+        \addtocounter{QA_Q_aux}{1}
+        \setcounter{QA_Q}{0} % reset the inner counter
+        \counterwithin{QA_Q}{QA_Q_aux}
+        \hook_gput_code:nnn { env/QA_Q/begin } { Q-and-A-multi-Q }
+          {
+            \bool_gset_false:N \g__QA_Q_multiple_counter_already_updated_bool
+          }
+        \hook_gput_code:nnn { env/QA_A/begin } { Q-and-A-multi-Q }
+          {
+            \bool_if:NF \g__QA_Q_multiple_counter_already_updated_bool
+              {
+                \stepcounter{QA_Q_aux}
+              }
+            \bool_gset_true:N \g__QA_Q_multiple_counter_already_updated_bool
+          }
+      }
+    \bool_gset_true:N \g__QA_Q_multiple_counter_already_enabled_bool
+  }
+\NewDocumentCommand \DisableMultipleQuestion { }
+  {
+    \bool_if:NT \g__QA_Q_multiple_counter_already_enabled_bool
+      {
+        \counterwithout{QA_Q}{QA_Q_aux}
+        \setcounter{QA_Q}{\value{QA_Q_aux}} % set the outer counter
+        \addtocounter{QA_Q}{-1}
+        \hook_gremove_code:nn { env/QA_Q/begin } { Q-and-A-multi-Q }
+        \hook_gremove_code:nn { env/QA_A/begin } { Q-and-A-multi-Q }
+      }
+    \bool_gset_false:N \g__QA_Q_multiple_counter_already_enabled_bool
+  }
+
+\bool_new:N \g__QA_A_multiple_counter_already_enabled_bool
+\bool_new:N \g__QA_A_multiple_counter_already_updated_bool
+\bool_gset_false:N \g__QA_A_multiple_counter_already_enabled_bool
+\NewDocumentCommand \EnableMultipleAnswer { }
+  {
+    \bool_if:NF \g__QA_A_multiple_counter_already_enabled_bool
+      {
+        \setcounter{QA_A_aux}{\value{QA_A}} % set the outer counter
+        % \addtocounter{QA_A_aux}{1}
+        \setcounter{QA_A}{0} % reset the inner counter
+        \counterwithin{QA_A}{QA_A_aux}
+        \hook_gput_code:nnn { env/QA_A/begin } { Q-and-A-multi-A }
+          {
+            \bool_gset_false:N \g__QA_A_multiple_counter_already_updated_bool
+          }
+        \hook_gput_code:nnn { env/QA_Q/begin } { Q-and-A-multi-A }
+          {
+            \bool_if:NF \g__QA_A_multiple_counter_already_updated_bool
+              {
+                \stepcounter{QA_A_aux}
+              }
+            \bool_gset_true:N \g__QA_A_multiple_counter_already_updated_bool
+          }
+      }
+    \bool_gset_true:N \g__QA_A_multiple_counter_already_enabled_bool
+  }
+\NewDocumentCommand \DisableMultipleAnswer { }
+  {
+    \bool_if:NT \g__QA_A_multiple_counter_already_enabled_bool
+      {
+        \counterwithout{QA_A}{QA_A_aux}
+        \setcounter{QA_A}{\value{QA_A_aux}} % set the outer counter
+        % \addtocounter{QA_A}{-1}
+        \hook_gremove_code:nn { env/QA_A/begin } { Q-and-A-multi-A }
+        \hook_gremove_code:nn { env/QA_Q/begin } { Q-and-A-multi-A }
+      }
+    \bool_gset_false:N \g__QA_A_multiple_counter_already_enabled_bool
+  }
+
+\bool_if:NT \l__QA_multiple_question_bool { \EnableMultipleQuestion }
+\bool_if:NT \l__QA_multiple_answer_bool   { \EnableMultipleAnswer   }
 
 \bool_if:NTF \l__QA_numbered_question_bool
   {
