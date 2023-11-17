@@ -1,0 +1,85 @@
+"
+  We start with the **normal** mode.
+
+?
+  Question.
+
+:
+  Answer.
+
+?
+  Question.
+
+:
+  Answer.
+
+"
+  Now start the **multiple question** mode.
+
+\EnableMultipleQuestion
+
+?
+  Question.
+
+?
+  Question.
+
+:
+  Answer.
+
+"
+  Now stop the **multiple question** mode, and start the **multiple answer** mode.
+
+\DisableMultipleQuestion
+
+\EnableMultipleAnswer
+
+?
+  Question.
+
+:
+  Answer.
+
+:
+  Answer.
+
+"
+  Now start both the **multiple question** mode and the **multiple answer** mode.
+
+\EnableMultipleQuestion
+
+\EnableMultipleAnswer
+
+?
+  Question.
+
+?
+  Question.
+
+:
+  Answer.
+
+:
+  Answer.
+
+:
+  Answer.
+
+"
+  Back to the **normal** mode.
+
+\DisableMultipleQuestion
+
+\DisableMultipleAnswer
+
+?
+  Question.
+
+:
+  Answer.
+
+?
+  Question.
+
+:
+  Answer.

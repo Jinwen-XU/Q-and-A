@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {Q-and-A}
-  {2023/11/17} {}
+  {2023/11/17a} {}
   {Document class for typesetting Q&A conversation}
 
 \keys_define:nn { Q-and-A }
@@ -375,6 +375,7 @@
     includegraphics,
     definecolor, colorlet, color, textcolor,
     tikz, draw, fill, filldraw, node, clip,
+    smaller,larger,
   }
   {% LaTeX3 commands
   }
@@ -384,6 +385,12 @@
     UseLanguage,
     TheDate,
     SetLogoCode,
+    SetSubcounterStyle,
+    SetSubcounterSeparator,
+    EnableMultipleQuestion,
+    EnableMultipleAnswer,
+    DisableMultipleQuestion,
+    DisableMultipleAnswer,
   }
   {% LaTeX3 commands
   }
@@ -758,10 +765,11 @@
       }
   }
 
-\NewDocumentCommand \SetLogoCode { O{void} m }
+\NewDocumentCommand \QASetLogoCode { O{void} m }
   {
     \tl_set:cn { l_QA_logo_code_ #1 _tl } { #2 }
   }
+\NewCommandCopy \SetLogoCode \QASetLogoCode
 
 % Set default logo code
 \SetLogoCode[Q]{\textbf{\l_QA_label_Q_tl}}
@@ -776,10 +784,12 @@
   {
     \def\QASubcounterStyle{#1}
   }
+\NewCommandCopy \SetSubcounterStyle \QASetSubcounterStyle
 \NewDocumentCommand \QASetSubcounterSeparator { m }
   {
     \def\QASubcounterSeparator{#1}
   }
+\NewCommandCopy \SetSubcounterSeparator \QASetSubcounterSeparator
 
 \bool_if:NT \l__QA_smaller_subcounter_bool
   {
@@ -959,18 +969,22 @@
         \prop_gput_if_new:Nnn \g__QA_prefix_type_prop { ##1 } { #1 }
       }
   }
+\NewCommandCopy \SetTypePrefix \QASetTypePrefix
 \NewDocumentCommand \QAAddTypePrefix { m m }
   {
     \prop_gput_if_new:Nnn \g__QA_prefix_type_prop { #2 } { #1 }
   }
+\NewCommandCopy \AddTypePrefix \QAAddTypePrefix
 \NewDocumentCommand \QARemovePrefix { m }
   {
     \prop_gremove:Nn \g__QA_prefix_type_prop { #1 }
   }
+\NewCommandCopy \RemovePrefix \QARemovePrefix
 \NewDocumentCommand \QARemoveAllPrefix { }
   {
     \prop_gclear:N \g__QA_prefix_type_prop
   }
+\NewCommandCopy \RemoveAllPrefix \QARemoveAllPrefix
 
 % \QASetTypePrefix { void } { VOID }
 % \QASetTypePrefix { Q } { Q: , ? }
