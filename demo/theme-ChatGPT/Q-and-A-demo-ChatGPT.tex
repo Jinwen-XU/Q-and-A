@@ -6,37 +6,29 @@
 
 % The User Logo
 \SetLogoCode[Q]{%
-  \smash{\raisebox{-.65\baselineskip}{%
+  \smash{\raisebox{-.35\baselineskip}{%
     \begin{tikzpicture}
-      \node [inner sep=0pt] at (0,0) {\includegraphics[height=1.5\baselineskip]{Q-and-A-demo-logo-User}};
-      \draw [QA-Q-back, rounded corners=.15\baselineskip, line width=.2\baselineskip]
-        (current bounding box.north west) --
-        (current bounding box.north east) --
-        (current bounding box.south east) --
-        (current bounding box.south west) -- cycle;
-      \clip (current bounding box.north west) --
-        (current bounding box.north east) --
-        (current bounding box.south east) --
-        (current bounding box.south west) -- cycle;
+      \clip (0,0) circle (.54\baselineskip);
+      \draw [QA-A-emph, line width=.04\baselineskip]
+        (0,0) circle (.52\baselineskip);
+      \node [inner sep=0pt, opacity=.7] at (0,0) {\includegraphics[height=1.2\baselineskip]{Q-and-A-demo-ChatGPT-logo-User}};
+      \clip (0,0) circle (.5\baselineskip);
+      \node [inner sep=0pt] at (0,0) {\includegraphics[height=1.2\baselineskip]{Q-and-A-demo-ChatGPT-logo-User}};
     \end{tikzpicture}%
-  }\hspace{-.25em}%
+  }\hspace{-.75em}%
   }}
 % The ChatGPT Logo
 \SetLogoCode[A]{%
-  \smash{\raisebox{-.65\baselineskip}{%
+  \smash{\raisebox{-.35\baselineskip}{%
     \begin{tikzpicture}
-      \node [inner sep=0pt] at (0,0) {\includegraphics[height=1.5\baselineskip]{Q-and-A-demo-logo-ChatGPT}};
-      \draw [QA-A-back, rounded corners=.15\baselineskip, line width=.2\baselineskip]
-        (current bounding box.north west) --
-        (current bounding box.north east) --
-        (current bounding box.south east) --
-        (current bounding box.south west) -- cycle;
-      \clip (current bounding box.north west) --
-        (current bounding box.north east) --
-        (current bounding box.south east) --
-        (current bounding box.south west) -- cycle;
+      \clip (0,0) circle (.54\baselineskip);
+      \draw [QA-A-emph, line width=.04\baselineskip]
+        (0,0) circle (.52\baselineskip);
+      \node [inner sep=0pt, opacity=.7] at (0,0) {\includegraphics[height=1.2\baselineskip]{Q-and-A-demo-ChatGPT-logo-ChatGPT}};
+      \clip (0,0) circle (.5\baselineskip);
+      \node [inner sep=0pt] at (0,0) {\includegraphics[height=1.2\baselineskip]{Q-and-A-demo-ChatGPT-logo-ChatGPT}};
     \end{tikzpicture}%
-  }\hspace{-.25em}%
+  }\hspace{-.75em}%
   }}
 
 
@@ -44,6 +36,8 @@
 
 
 :: {Q-and-A-demo-ChatGPT-content}
+
+---
 
 "
   Below is the code of this conversation.

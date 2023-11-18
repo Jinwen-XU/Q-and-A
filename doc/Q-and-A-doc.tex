@@ -5,8 +5,8 @@
   scroll,
 ]{Q-and-A}
 
-\def\PackageVersion{2023/11/17}
-\def\PackageSubVersion{a}
+\def\PackageVersion{2023/11/18}
+\def\PackageSubVersion{}
 
 \newcommand{\QApackage}{{\normalfont\textsf{Q-and-A}}}
 
@@ -72,10 +72,19 @@
   \begin{itemize}
     \item Font size options such as `11pt`, `12pt`.
     \item `scroll`: turn the scroll mode on, which generates a single-page pdf similar to a long screenshot. It is recommended to use this option if your document contains some large piece of code.
-    \item `use theme = \meta{theme}`: use the selected theme, available choices include: `default` (like the current document), `ChatGPT-light` and `ChatGPT-dark` (see the demo documents).
+    \item `use theme = \meta{theme}`: use the selected theme, available choices include:
+    \begin{itemize}
+      \item `default` (like the current document);
+      \item `ChatGPT-light` and `ChatGPT-dark` (see the demo documents);
+      \item `ChatGPT-classical-light` and `ChatGPT-classical-dark` (see the demo documents).
+    \end{itemize}
     \item `numbered question`, or `question number`: enable the numbering of questions.
     \item `numbered answer`, or `answer number`: enable the numbering of answers.
-    \item `multiple question` and `multiple answer`: enable subcounter for questions and answers. This can also be enabled/disabled manually in the middle of the document, via `\textbackslash EnableMultipleQuestion` / `\textbackslash DisableMultipleQuestion` and `\textbackslash EnableMultipleAnswer` / `\textbackslash DisableMultipleAnswer`.
+    \item `multiple question` and `multiple answer`: enable subcounter for questions and answers. This can also be enabled/disabled manually in the middle of the document, via:
+    \begin{itemize}
+      \item `\textbackslash EnableMultipleQuestion` / `\textbackslash DisableMultipleQuestion` and
+      \item `\textbackslash EnableMultipleAnswer` / `\textbackslash DisableMultipleAnswer`.
+    \end{itemize}
     \item `smaller subcounter`: when `multiple question` (and/or `multiple answer`) is enabled, use this option to show the subcounter in a smaller size.
     \item `enlarge left margin by = \meta{length}`, or `increase left margin by = \meta{length}`: enlarge the left margin by the amount of `\meta{length}`. This would be useful if there are so many questions/answers that the numbering becomes too long to fit in the margin.
     \QANote{Here `\meta{length}` should be specified with absolute unit like `pt`, `cm`, `mm`, `in`, etc., but not with unit like `ex` or `em`.}
@@ -94,7 +103,7 @@
     \item An answer begins with the prefix `A:` or `:`.
     \item A narration begins with the prefix `N:` or `"`.
   \end{itemize}
-  >>> Note that this depends on the current language. The prefixes `?`, `:` and `"` being universal, yet~—
+  \QANote{Note that this depends on the current language. The prefixes `?`, `:` and `"` being universal, yet~—
   \begin{itemize}
     \item for French, it is Q\&R\&N, thus the alphabetical prefixes become `Q:`, `R:` and `N:`;
     \item for German, it is F\&A\&E, thus the alphabetical prefixes become `F:`, `A:` and `E:`;
@@ -104,7 +113,9 @@
     \item for Spanish, it is P\&R\&N, thus the alphabetical prefixes become `P:`, `R:` and `N:`;
     \item for simplified Chinese, it is also possible to use the prefix `问：` for questions, `答：` for answers, and `注：` for narrations; similarly for traditional Chinese;
     \item for Chinese or Japanese, it is also possible to use the prefix `？` for questions, `：` for answers, and `“`, `”` or `「` for narrations.
-  \end{itemize}
+  \end{itemize}}
+  You may specify the identity of the current speaker by placing `<\meta{name}>` after the prefix (there could be some spaces in between). For example, `? <You>` would set the questioner's name to `You`. How this name is disposed of depends on your current selected theme.
+  \QANote{The identity for the current type would be recorded, so unless you wish to change it, you only need to write it once.}
 
   [Emphasize and Bold]
   \begin{itemize}
@@ -273,6 +284,7 @@
     %% 2023-11-05, solved with the new option "answer outside the box".
     \item Due to the current implementation, though it is already possible to automatically adopt the identifiers and labels for supported languages, you still need to use the identifiers `Q`, `A` and `N` when setting them.
     \item Currently, for typesetting questions and answers, the text is in fact being put into some sort of `description` list (upon reflection, why did I do this? I could have simply put the label into margin...). As a result, the level of lists might be slightly messed up, which could sometimes lead to issues with the list labels.
+    \item The code for all those themes is currently mixed up, which poses difficulties for maintenance and expandability.
   \end{itemize}
 
 

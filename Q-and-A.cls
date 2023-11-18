@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {Q-and-A}
-  {2023/11/17a} {}
+  {2023/11/18} {}
   {Document class for typesetting Q&A conversation}
 
 \keys_define:nn { Q-and-A }
@@ -40,6 +40,15 @@
     , ChatGPT-dark      .meta:n             = { theme = ChatGPT-dark  }
     , ChatGPT~dark      .meta:n             = { theme = ChatGPT-dark  }
     , ChatGPT dark      .meta:n             = { theme = ChatGPT-dark  }
+    , ChatGPT-classical           .meta:n   = { theme = ChatGPT-classical-light }
+    , ChatGPT-classical-light     .meta:n   = { theme = ChatGPT-classical-light }
+    , ChatGPT-classical~light     .meta:n   = { theme = ChatGPT-classical-light }
+    , ChatGPT~classical~light     .meta:n   = { theme = ChatGPT-classical-light }
+    , ChatGPT classical light     .meta:n   = { theme = ChatGPT-classical-light }
+    , ChatGPT-classical-dark      .meta:n   = { theme = ChatGPT-classical-dark  }
+    , ChatGPT-classical~dark      .meta:n   = { theme = ChatGPT-classical-dark  }
+    , ChatGPT~classical~dark      .meta:n   = { theme = ChatGPT-classical-dark  }
+    , ChatGPT classical dark      .meta:n   = { theme = ChatGPT-classical-dark  }
 
     , numbered-question .bool_set:N         = \l__QA_numbered_question_bool
     , numbered-question .initial:n          = { false }
@@ -132,6 +141,36 @@
     \definecolor{QA-Q-back}{RGB}{ 52, 53, 65}
     \definecolor{QA-Q-text}{RGB}{236,236,241}
     \definecolor{QA-Q-emph}{RGB}{255,255,255}
+    \colorlet{QA-A-back}{QA-Q-back}
+    \colorlet{QA-A-text}{QA-Q-text}
+    \colorlet{QA-A-emph}{QA-Q-emph}
+    \colorlet{QA-N-back}{QA-Q-back}
+    \colorlet{QA-N-text}{QA-Q-text}
+    \colorlet{paper}{QA-Q-back}
+    \colorlet{main-text}{QA-Q-text}
+    \colorlet{emph-text}{QA-Q-text}
+  }
+
+\str_if_eq:onT { \l__QA_theme_str } { ChatGPT-light }
+  {
+    \definecolor{QA-Q-back}{RGB}{255,255,255}
+    \definecolor{QA-Q-text}{RGB}{ 52, 53, 65}
+    \definecolor{QA-Q-emph}{RGB}{  0,  0,  0}
+    \colorlet{QA-A-back}{QA-Q-back}
+    \colorlet{QA-A-text}{QA-Q-text}
+    \colorlet{QA-A-emph}{QA-Q-emph}
+    \colorlet{QA-N-back}{QA-Q-back}
+    \colorlet{QA-N-text}{QA-Q-text}
+    \colorlet{paper}{QA-Q-back}
+    \colorlet{main-text}{QA-Q-text}
+    \colorlet{emph-text}{QA-Q-text}
+  }
+
+\str_if_eq:onT { \l__QA_theme_str } { ChatGPT-classical-dark }
+  {
+    \definecolor{QA-Q-back}{RGB}{ 52, 53, 65}
+    \definecolor{QA-Q-text}{RGB}{236,236,241}
+    \definecolor{QA-Q-emph}{RGB}{255,255,255}
     \definecolor{QA-A-back}{RGB}{ 68, 70, 84}
     \definecolor{QA-A-text}{RGB}{209,213,219}
     \definecolor{QA-A-emph}{RGB}{255,255,255}
@@ -142,7 +181,7 @@
     \colorlet{emph-text}{QA-Q-text}
   }
 
-\str_if_eq:onT { \l__QA_theme_str } { ChatGPT-light }
+\str_if_eq:onT { \l__QA_theme_str } { ChatGPT-classical-light }
   {
     \definecolor{QA-Q-back}{RGB}{255,255,255}
     \definecolor{QA-Q-text}{RGB}{ 52, 53, 65}
@@ -184,7 +223,7 @@
 \dim_new:N \l_QA_list_labelsep_dim
 \dim_set:Nn \l_QA_list_labelsep_dim { 1em }
 
-\exp_args:No \str_if_in:nnT { \l__QA_theme_str } { ChatGPT }
+\str_if_in:NnT \l__QA_theme_str { ChatGPT }
   {
     \dim_set:Nn \l_QA_item_indentation_dim { .33em }
     \dim_set:Nn \l_QA_list_indentation_dim { 4.5em + \l__QA_extra_left_margin_dim }
@@ -290,7 +329,17 @@
 
 \tcbset{QA-additional/.style={}}
 % ChatGPT style
-\exp_args:No \str_if_in:nnT { \l__QA_theme_str } { ChatGPT }
+\str_if_in:NnT \l__QA_theme_str { ChatGPT }
+  {
+    \tcbset{QA-additional/.style={
+        fontupper=\sffamily,
+        code={\onehalfspacing},
+        top=1.5em,
+        bottom=1.5em,
+      }
+    }
+  }
+\str_if_in:NnT \l__QA_theme_str { ChatGPT-classical }
   {
     \tcbset{QA-additional/.style={
         fontupper=\sffamily,
@@ -625,7 +674,7 @@
     % \textcolor{emph-text}{\texttt{#1}}
     \QACodebox{\vphantom{Äpgjy}#1}
   }
-\exp_args:No \str_if_in:nnT { \l__QA_theme_str } { ChatGPT }
+\str_if_in:NnT \l__QA_theme_str { ChatGPT }
   {
     \RenewDocumentCommand \QACode { m }
       {
@@ -652,8 +701,14 @@
   }
 
 \NewDocumentEnvironment { QA_void } { } { } { }
+
+\str_new:N \g__QA_Q_name_str
 \NewDocumentEnvironment { QA_Q } { D<>{} }
   {
+    \str_if_empty:nF { #1 }
+      {
+        \str_gset:Nn \g__QA_Q_name_str { #1 }
+      }
     \colorlet{paper}{QA-Q-back}
     \colorlet{main-text}{QA-Q-text}
     \colorlet{emph-text}{QA-Q-emph}
@@ -665,21 +720,38 @@
       colback={QA-Q-back},
       colupper={QA-Q-text},
     ]
-      \exp_args:No \str_if_in:nnT { \l__QA_theme_str } { ChatGPT }
+      \str_if_in:NnT \l__QA_theme_str { ChatGPT }
         { \vspace{-.5\parskip} }
       \vspace{-.5\parskip} % due to "parbox=false"
       \vspace{-\parskip}
       \begin{QA-entry}
-        \exp_args:No \str_if_in:nnT { \l__QA_theme_str } { ChatGPT }
+        \str_if_in:NnT \l__QA_theme_str { ChatGPT }
           { \parskip=2\parskip }
         \item[\hfill\color{QA-Q-text!33!QA-Q-back}\l_QA_logo_code_Q_tl]
+        \str_case:NnT \l__QA_theme_str
+          {
+            { ChatGPT-dark  } {}
+            { ChatGPT-light } {}
+          }
+          {
+            \str_if_empty:NF \g__QA_Q_name_str
+              {
+                \textbf{ \g__QA_Q_name_str }\\
+              }
+          }
   }
   {
       \end{QA-entry}
     \end{tcolorbox}
   }
+
+\str_new:N \g__QA_A_name_str
 \NewDocumentEnvironment { QA_A } { D<>{} }
   {
+    \str_if_empty:nF { #1 }
+      {
+        \str_gset:Nn \g__QA_A_name_str { #1 }
+      }
     \colorlet{paper}{QA-A-back}
     \colorlet{main-text}{QA-A-text}
     \colorlet{emph-text}{QA-A-emph}
@@ -691,14 +763,25 @@
       colback={QA-A-back},
       colupper={QA-A-text},
     ]
-      \exp_args:No \str_if_in:nnT { \l__QA_theme_str } { ChatGPT }
+      \str_if_in:NnT \l__QA_theme_str { ChatGPT }
         { \vspace{-.5\parskip} }
       \vspace{-.5\parskip} % due to "parbox=false"
       \vspace{-\parskip}
       \begin{QA-entry}
-        \exp_args:No \str_if_in:nnT { \l__QA_theme_str } { ChatGPT }
+        \str_if_in:NnT \l__QA_theme_str { ChatGPT }
           { \parskip=2\parskip }
         \item[\hfill\color{QA-A-text!33!QA-A-back}\l_QA_logo_code_A_tl]
+        \str_case:NnT \l__QA_theme_str
+          {
+            { ChatGPT-dark  } {}
+            { ChatGPT-light } {}
+          }
+          {
+            \str_if_empty:NF \g__QA_A_name_str
+              {
+                \textbf{ \g__QA_A_name_str }\\
+              }
+          }
   }
   {
       \end{QA-entry}
@@ -709,7 +792,7 @@
     \colorlet{paper}{QA-N-back}
     \colorlet{main-text}{QA-N-text}
     \colorlet{emph-text}{QA-N-emph}
-    \exp_args:No \str_if_in:nnT { \l__QA_theme_str } { ChatGPT }
+    \str_if_in:NnT \l__QA_theme_str { ChatGPT }
       {
         \colorlet{QA-code-title-back}{QA-A-back}
         \colorlet{QA-code-title-text}{QA-A-text}
@@ -742,26 +825,46 @@
 
     \RenewDocumentEnvironment { QA_A } { D<>{} }
       {
+        \str_if_empty:nF { #1 }
+          {
+            \str_gset:Nn \g__QA_A_name_str { #1 }
+          }
         \color{QA-A-text}
         \vspace{1em}
-        \exp_args:No \str_if_in:nnT { \l__QA_theme_str } { ChatGPT }
+        \str_if_in:NnT \l__QA_theme_str { ChatGPT }
+          { \vspace{.5em} }
+        \str_if_in:NnT \l__QA_theme_str { ChatGPT-classical }
+          { \vspace{.5em} }
+        \str_if_in:NnT \l__QA_theme_str { ChatGPT }
           {
-            \vspace{1em}
             \sffamily
             \onehalfspacing
             \vspace{-.5\parskip}
           }
         \vspace{-.5\parskip}
         \begin{QA-entry}[leftmargin=.5mm, itemindent=0pt, labelsep=\l_QA_list_labelsep_dim, labelwidth=3em]
-          \exp_args:No \str_if_in:nnT { \l__QA_theme_str } { ChatGPT }
+          \str_if_in:NnT \l__QA_theme_str { ChatGPT }
             { \parskip=2\parskip }
           \item[\hfill\color{QA-A-text!33!QA-A-back}\l_QA_logo_code_A_tl]
+          \str_case:NnT \l__QA_theme_str
+            {
+              { ChatGPT-dark  } {}
+              { ChatGPT-light } {}
+            }
+            {
+              \str_if_empty:NF \g__QA_A_name_str
+                {
+                  \textbf{ \g__QA_A_name_str }\\
+                }
+            }
       }
       {
         \end{QA-entry}
         \vspace{1em}
-        \exp_args:No \str_if_in:nnT { \l__QA_theme_str } { ChatGPT }
-          { \vspace{1em} }
+        \str_if_in:NnT \l__QA_theme_str { ChatGPT }
+          { \vspace{.5em} }
+        \str_if_in:NnT \l__QA_theme_str { ChatGPT-classical }
+          { \vspace{.5em} }
       }
   }
 
