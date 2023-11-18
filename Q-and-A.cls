@@ -940,6 +940,10 @@
 \bool_gset_false:N \g__QA_Q_multiple_counter_already_enabled_bool
 \NewDocumentCommand \EnableMultipleQuestion { }
   {
+    \hook_gput_next_code:nn { env/QA_Q/before } { \__QA_Q_multiple_enable_core: }
+  }
+\cs_new:Nn \__QA_Q_multiple_enable_core:
+  {
     \bool_if:NF \g__QA_Q_multiple_counter_already_enabled_bool
       {
         \setcounter{QA_Q_aux}{\value{QA_Q}} % set the outer counter
@@ -963,6 +967,10 @@
   }
 \NewDocumentCommand \DisableMultipleQuestion { }
   {
+    \hook_gput_next_code:nn { env/QA_Q/before } { \__QA_Q_multiple_disable_core: }
+  }
+\cs_new:Nn \__QA_Q_multiple_disable_core:
+  {
     \bool_if:NT \g__QA_Q_multiple_counter_already_enabled_bool
       {
         \counterwithout{QA_Q}{QA_Q_aux}
@@ -979,10 +987,14 @@
 \bool_gset_false:N \g__QA_A_multiple_counter_already_enabled_bool
 \NewDocumentCommand \EnableMultipleAnswer { }
   {
+    \hook_gput_next_code:nn { env/QA_A/before } { \__QA_A_multiple_enable_core: }
+  }
+\cs_new:Nn \__QA_A_multiple_enable_core:
+  {
     \bool_if:NF \g__QA_A_multiple_counter_already_enabled_bool
       {
         \setcounter{QA_A_aux}{\value{QA_A}} % set the outer counter
-        % \addtocounter{QA_A_aux}{1}
+        \addtocounter{QA_A_aux}{1}
         \setcounter{QA_A}{0} % reset the inner counter
         \counterwithin{QA_A}{QA_A_aux}
         \hook_gput_code:nnn { env/QA_A/begin } { Q-and-A-multi-A }
@@ -1002,11 +1014,15 @@
   }
 \NewDocumentCommand \DisableMultipleAnswer { }
   {
+    \hook_gput_next_code:nn { env/QA_A/before } { \__QA_A_multiple_disable_core: }
+  }
+\cs_new:Nn \__QA_A_multiple_disable_core:
+  {
     \bool_if:NT \g__QA_A_multiple_counter_already_enabled_bool
       {
         \counterwithout{QA_A}{QA_A_aux}
         \setcounter{QA_A}{\value{QA_A_aux}} % set the outer counter
-        % \addtocounter{QA_A}{-1}
+        \addtocounter{QA_A}{-1}
         \hook_gremove_code:nn { env/QA_A/begin } { Q-and-A-multi-A }
         \hook_gremove_code:nn { env/QA_Q/begin } { Q-and-A-multi-A }
       }
@@ -1492,6 +1508,14 @@
       {
         \end { Q-and-A }
         \vspace{-1mm}
+        \str_case:NnT \l__QA_theme_str
+          {
+            { ChatGPT-dark  } {}
+            { ChatGPT-light } {}
+          }
+          {
+            \vspace{1em}
+          }
         \egroup
         \dimen0=\dp0
         \pdfpageheight=\dimexpr\ht0\relax
