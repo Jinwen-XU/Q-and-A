@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {Q-and-A}
-  {2023/11/18} {}
+  {2023/11/19} {}
   {Document class for typesetting Q&A conversation}
 
 \keys_define:nn { Q-and-A }
@@ -580,6 +580,25 @@
     \end{tcolorbox}
     \vspace{.15\baselineskip}
     \dim_gset:Nn \labelsep { \l_tmpa_dim }
+  }
+
+\NewDocumentCommand \QASection { m }
+  {
+    \par\medskip\smallskip
+    \textbf{\larger[1.5]#1}
+    \par\smallskip
+  }
+\NewDocumentCommand \QASubSection { m }
+  {
+    \par\medskip
+    \textbf{\larger#1}
+    \par\smallskip
+  }
+\NewDocumentCommand \QASubSubSection { m }
+  {
+    \par\smallskip
+    \textbf{#1}
+    \par\smallskip
   }
 
 \newenvironment{QACompactCenter}
@@ -1221,16 +1240,28 @@
           { ⚛ \c{section} }
           \l_QA_tmp_tl
         \regex_replace_all:nnN
-          { \#\#\#\# }
+          { \#\#\#\#\- }
           { ⚛ \c{subsubsection}\* }
           \l_QA_tmp_tl
         \regex_replace_all:nnN
-          { \#\#\# }
+          { \#\#\#\- }
           { ⚛ \c{subsection}\* }
           \l_QA_tmp_tl
         \regex_replace_all:nnN
-          { \#\# }
+          { \#\#\- }
           { ⚛ \c{section}\* }
+          \l_QA_tmp_tl
+        \regex_replace_all:nnN
+          { \#\#\#\# }
+          { \c{QASubSubSection} }
+          \l_QA_tmp_tl
+        \regex_replace_all:nnN
+          { \#\#\# }
+          { \c{QASubSection} }
+          \l_QA_tmp_tl
+        \regex_replace_all:nnN
+          { \#\# }
+          { \c{QASection} }
           \l_QA_tmp_tl
 
         \regex_replace_all:nnN
