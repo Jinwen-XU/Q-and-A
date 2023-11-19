@@ -231,7 +231,7 @@
   }
 
 \newlist { QA-entry } { description } { 1 }
-\setlist [ QA-entry ] { font = \normalfont\sffamily, leftmargin = \l_QA_list_indentation_dim, labelsep = \l_QA_list_labelsep_dim, labelwidth=4em, itemindent=0pt, parsep=\parskip }
+\setlist [ QA-entry ] { font = \normalfont\sffamily, leftmargin = \l_QA_list_indentation_dim, labelsep = \l_QA_list_labelsep_dim, labelwidth=10em, itemindent=0pt, parsep=\parskip }
 \renewcommand{\descriptionlabel}[1]{#1}
 
 \bool_new:N \l__QA_inside_list_bool
@@ -1382,10 +1382,6 @@
               }
           }
 
-        % \regex_replace_once:nnN
-        %   { ❄️ \ *? \[\*(.*?)\] (.*) }
-        %   { \c{QAItem} {\1} {\2} }
-        %   \l_QA_tmp_tl
         %% Process the first and wrap the others inside
         \regex_replace_once:nnN
           { ❄️ \ *? \[\*(.*?)\] (.*) }
@@ -1412,38 +1408,8 @@
           { \c{QAItem} {\1} {\2} }
           \l_QA_tmp_tl
 
-        %% Process the first and wrap the others inside
-        \regex_replace_once:nnN
-          { ❄️ \ *? 【\*(.*?)】 (.*) }
-          { \c{QAItem} {\1} {\2} }
-          \l_QA_tmp_tl
-        %% Process the middle ones
-        \bool_set_false:N \l_QA_regex_no_more_match_bool
-        \bool_do_until:nn \l_QA_regex_no_more_match_bool
-          {
-            \regex_match:nVTF { 【\*(.*?)】 (.*?) 【\* } \l_QA_tmp_tl
-              {
-                \regex_replace_once:nnN
-                  { 【\*(.*?)】 (.*?) 【\* }
-                  { \c{QAItem} {\1} {\2} \c{QAadjustitem} 【\* }
-                  \l_QA_tmp_tl
-              }
-              {
-                \bool_set_true:N \l_QA_regex_no_more_match_bool
-              }
-          }
-        %% Process the last one
-        \regex_replace_once:nnN
-          { 【\*(.*?)】 (.*) }
-          { \c{QAItem} {\1} {\2} }
-          \l_QA_tmp_tl
-
         \regex_replace_once:nnN
           { ❄️ \ *? \[(.*?)\] (\*?) (.*) }
-          { \c{QAEnum} \2 {\1} {\3} }
-          \l_QA_tmp_tl
-        \regex_replace_once:nnN
-          { ❄️ \ *? 【(.*?)】 (\*?) (.*) }
           { \c{QAEnum} \2 {\1} {\3} }
           \l_QA_tmp_tl
 
