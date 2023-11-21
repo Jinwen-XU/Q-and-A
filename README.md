@@ -8,15 +8,32 @@
 
 Notably, it features two themes, `ChatGPT-light` and `ChatGPT-dark`, enabling you to format your Q&A dialog in a way that closely resembles the interface of ChatGPT.
 
-![image](https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-default.png)
+### Screenshots
 
-![image](https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-ChatGPT-1.png)
+<!-- ![image](https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-default.png) -->
+<div align=center><img width="400" src="https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-default.png"/></div>
 
-![image](https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-ChatGPT-classical-1.png)
+> From [the documentation](https://github.com/Jinwen-XU/Q-and-A/blob/main/doc/Q-and-A-doc.pdf).
 
-![image](https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-default-1.png)
+<!-- ![image](https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-ChatGPT-1.png) -->
+<div align=center><img width="750" src="https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-ChatGPT-1.png"/></div>
 
-![image](https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-multiple-1.png)
+> From [the demo document for theme "ChatGPT-dark"](https://github.com/Jinwen-XU/Q-and-A/blob/main/demo/theme-ChatGPT/Q-and-A-demo-ChatGPT-dark.pdf).
+
+<!-- ![image](https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-ChatGPT-classical-1.png) -->
+<div align=center><img width="750" src="https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-ChatGPT-classical-1.png"/></div>
+
+> From [the demo document for theme "ChatGPT-classical-dark"](https://github.com/Jinwen-XU/Q-and-A/blob/main/demo/theme-ChatGPT-classical/Q-and-A-demo-ChatGPT-classical-dark.pdf).
+
+<!-- ![image](https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-default-1.png) -->
+<div align=center><img width="750" src="https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-default-1.png"/></div>
+
+> From [the English demo document](https://github.com/Jinwen-XU/Q-and-A/blob/main/demo/lang-en/Q-and-A-demo-en.pdf).
+
+<!-- ![image](https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-multiple-1.png) -->
+<div align=center><img width="750" src="https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-multiple-1.png"/></div>
+
+> From [the demo document for multiple questions/answers](https://github.com/Jinwen-XU/Q-and-A/blob/main/demo/mode-multiple/Q-and-A-demo-multiple.pdf).
 
 ## Installation and preparation
 
