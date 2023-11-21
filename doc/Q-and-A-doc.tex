@@ -5,7 +5,7 @@
   scroll,
 ]{Q-and-A}
 
-\def\PackageVersion{2023/11/19}
+\def\PackageVersion{2023/11/21}
 \def\PackageSubVersion{}
 
 \newcommand{\QApackage}{{\normalfont\textsf{Q-and-A}}}
@@ -114,8 +114,11 @@
     \item for simplified Chinese, it is also possible to use the prefix `问：` for questions, `答：` for answers, and `注：` for narrations; similarly for traditional Chinese;
     \item for Chinese or Japanese, it is also possible to use the prefix `？` for questions, `：` for answers, and `“`, `”` or `「` for narrations.
   \end{itemize}}
-  You may specify the identity of the current speaker by placing `<\meta{name}>` after the prefix (there could be some spaces in between). For example, `? <You>` would set the questioner's name to `You`. How this name is disposed of depends on your current selected theme.
-  \QANote{The identity for the current type would be recorded, so unless you wish to change it, you only need to write it once.}
+  \begin{itemize}
+    \item You may specify the identity of the current speaker by placing `<\meta{name}>` after the prefix (there could be some spaces in between). For example, `? <You>` would set the questioner's name to `You`. How this name is disposed of depends on your current selected theme.
+    \QANote{The identity for the current type would be recorded, so unless you wish to change it, you only need to write it once.}
+    \item To reference a question/answer, use the commands `\textbackslash QALabel\{\meta{label}\}` and `\textbackslash QARef\{\meta{label}\}` (of course, for this to work, you first need to turn on the numbering via the class options `numbered question` and `numbered answer`).
+  \end{itemize}
 
   [Emphasize and Bold]
   \begin{itemize}
@@ -150,7 +153,8 @@
   \begin{itemize}
     \item For centered image, the caption can be written via `\textgreater\textgreater{} \meta{caption text}`.
   \end{itemize}
-  % \QANote{Currently, the `\meta{caption text}` shall be directly printed in the center. You may wish to add a pair of parentheses around it.}
+  \QANote{By default, the `\meta{caption text}` shall be directly printed in the center. To redefine its style, you may use the command `\textbackslash QASetCaptionStyle\{\meta{settings}\}`, where `\meta{settings}` is some code containing `\textsharp 1`, which refers to `\meta{caption text}`.\\
+  For example, `\textbackslash QASetCaptionStyle\{\textbackslash textcolor\{.!50\}\{(\textsharp 1)\}\}` adds a pair of parentheses around the \meta{caption text} and sets it to half transparent.}
 
   [Code]
   Due to the current implementation of this document class, it is unfortunate that you cannot directly insert source code in your document. There are some workarounds, though.
@@ -251,7 +255,7 @@
     \item Use `\textbackslash QASetLogoCode\{A\}\{\meta{logo code}\}` to set the labels for answers.
   \end{itemize}
   Here, \meta{logo code} is the actual code for displaying the corresponding label. For example, the default label for (unnumbered) questions is preset via `\textbackslash QASetLogoCode\{Q\}\{\textbackslash textbf\{Q\textbackslash,:\}\}`.
-  \QANote{In the demo document, you can find an example on how to use this command to specify a logo for each role in the conversation.}
+  \QANote{In the demo documents, you may find examples on how to use this command to specify a logo for each role in the conversation.}
   If you wish to include the question number or answer number, you may use the command `\textbackslash QAShowCounter`:
   \begin{itemize}
     \item Use `\textbackslash QAShowCounter\{Q\}` to step the counter of question and print it.
@@ -289,7 +293,12 @@
     %% 2023-11-05, solved with the new option "answer outside the box".
     \item Due to the current implementation, though it is already possible to automatically adopt the identifiers and labels for supported languages, you still need to use the identifiers `Q`, `A` and `N` when setting them.
     \item Currently, for typesetting questions and answers, the text is in fact being put into some sort of `description` list (upon reflection, why did I do this? I could have simply put the label into margin...). As a result, the level of lists might be slightly messed up, which could sometimes lead to issues with the list labels.
-    \item It is not yet possible to cite the questions/answers.
+    % \item It is not yet possible to cite the questions/answers.
+    %% 2023-11-19, solved with new commands \QALabel and \QARef.
+    % \item Referencing of questions/answers doesn't have hyperlinks.
+    %% 2023-11-20, solved by using the `target` property.
+    \item Referencing of questions/answers doesn't work for all themes.
+    \item If you decide to change the language in the middle of the text, referencing text wouldn't be shown in the original language, but would be shown according to the language of the context where the referencing command is being specified.
     \item Some vertical and horizontal spacing still needs to be fine-tuned.
     \item The code for all those themes is currently mixed up, which poses difficulties for maintenance and expandability.
   \end{itemize}

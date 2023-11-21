@@ -1,31 +1,31 @@
 "
   We start with the **normal** mode.
 
-?
+? \QALabel{Q:normal-1}
   Question.
 
 :
-  Answer.
+  Answer to \QARef{Q:normal-1}.
 
-?
+? \QALabel{Q:normal-2}
   Question.
 
 :
-  Answer.
+  Answer to \QARef{Q:normal-2}.
 
 "
   Now start the **multiple question** mode.
 
 \EnableMultipleQuestion
 
-?
-  Question.
+? \QALabel{Q:multi-1}
+  First question.
 
-?
-  Question.
+? \QALabel{Q:multi-2}
+  Second question.
 
 :
-  Answer.
+  Answer to \QARef{Q:multi-1} and \QARef{Q:multi-2}.
 
 "
   Now stop the multiple question mode, and start the **multiple answer** mode.
@@ -34,14 +34,14 @@
 
 \EnableMultipleAnswer
 
-?
-  Question.
+? \QALabel{Q:normal-multi}
+  Question with two answers \QARef{A:multi-1} and \QARef{A:multi-2}.
 
-:
-  Answer.
+: \QALabel{A:multi-1}
+  First answer to \QARef{Q:normal-multi}.
 
-:
-  Answer.
+: \QALabel{A:multi-2}
+  Second answer to \QARef{Q:normal-multi}.
 
 "
   Now start both the **multiple question** mode and the **multiple answer** mode.
@@ -50,20 +50,20 @@
 
 \EnableMultipleAnswer
 
-?
+? \QALabel{Q:multi-1'}
   Question.
 
-?
+? \QALabel{Q:multi-2'}
   Question.
 
 :
-  Answer.
+  First answer to \QARef{Q:multi-1'} and \QARef{Q:multi-2'}.
 
 :
-  Answer.
+  Second answer to \QARef{Q:multi-1'} and \QARef{Q:multi-2'}.
 
 :
-  Answer.
+  Third answer to \QARef{Q:multi-1'} and \QARef{Q:multi-2'}.
 
 "
   Back to the **normal** mode.
@@ -72,14 +72,14 @@
 
 \DisableMultipleAnswer
 
-?
+? \QALabel{Q:normal-1'}
   Question.
 
 :
-  Answer.
+  Answer to \QARef{Q:normal-1'}.
 
-?
+? \QALabel{Q:normal-2'}
   Question.
 
 :
-  Answer.
+  Answer \QARef{Q:normal-2'}.

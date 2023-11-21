@@ -9,10 +9,10 @@
 %%
 %%    http://www.latex-project.org/lppl.txt
 %%
-\NeedsTeXFormat{LaTeX2e}[2022-06-01]
+\NeedsTeXFormat{LaTeX2e}[2023/11/01]
 \ProvidesExplClass
   {Q-and-A}
-  {2023/11/19} {}
+  {2023/11/21} {}
   {Document class for typesetting Q&A conversation}
 
 \keys_define:nn { Q-and-A }
@@ -440,6 +440,7 @@
     EnableMultipleAnswer,
     DisableMultipleQuestion,
     DisableMultipleAnswer,
+    QALabel, QARef,
   }
   {% LaTeX3 commands
   }
@@ -582,6 +583,47 @@
     \dim_gset:Nn \labelsep { \l_tmpa_dim }
   }
 
+\property_new:nnnn { Q-and-A/type } { now } { void } { \l__QA_current_type_tl }
+\NewDocumentCommand \QALabel { m }
+  {
+    \group_begin:
+    \exp_args:No \addtocounter { QA_ \l__QA_current_type_tl } { -1 }
+    \exp_args:No \refstepcounter { QA_ \l__QA_current_type_tl }
+    \property_record:nn { #1 } { label, target, Q-and-A/type }
+    \group_end:
+  }
+
+\tl_new:N \l_QA_Q_ref_style_tl
+\tl_new:N \l_QA_A_ref_style_tl
+\NewDocumentCommand \QASetRefStyle { O{void} m }
+  {
+    \tl_set:cn { l_QA_ #1 _ref_style_tl } { #2 }
+  }
+\NewCommandCopy \SetRefStyle \QASetRefStyle
+
+\QASetRefStyle[Q]
+  {
+    \sffamily\bfseries
+    \color{QA-Q-text!33!QA-Q-back}
+  }
+\QASetRefStyle[A]
+  {
+    \sffamily\bfseries
+    \color{QA-A-text!33!QA-A-back}
+  }
+
+\NewDocumentCommand \QARef { m }
+  {
+    \group_begin:
+    \hyperlink { \property_ref:nn { #1 } { target } }
+      {
+        \cs_if_exist_use:c { l_QA_ \property_ref:nn { #1 } { Q-and-A/type } _ref_style_tl }
+        \cs_if_exist_use:c { l_QA_ \property_ref:nn { #1 } { Q-and-A/type } _label_text_tl }
+        \QA_show_subcounter_with_style:n { \property_ref:nn { #1 } { label } }
+      }
+    \group_end:
+  }
+
 \NewDocumentCommand \QASection { m }
   {
     \par\medskip\smallskip
@@ -613,12 +655,20 @@
 \newenvironment{QARight}
   {\parskip=0pt\par\medskip\nopagebreak\raggedleft}
   {\par\noindent\ignorespacesafterend}
-\NewDocumentCommand \QACompactCenterText { m }
+
+\NewDocumentCommand \QACaption { m } { }
+\NewDocumentCommand \QASetCaptionStyle { m }
   {
-    \begin{QACompactCenter}
-      #1
-    \end{QACompactCenter}
+    \RenewDocumentCommand \QACaption { m }
+      {
+        \begin{QACompactCenter}
+          #1
+        \end{QACompactCenter}
+      }
   }
+\NewCommandCopy \SetCaptionStyle \QASetCaptionStyle
+\QASetCaptionStyle { #1 }
+
 \NewDocumentCommand \QAShowImageCenter { D<>{*} m D<>{*} }
   {
     \str_if_eq:nnTF { #1 } { * }
@@ -724,6 +774,7 @@
 \str_new:N \g__QA_Q_name_str
 \NewDocumentEnvironment { QA_Q } { D<>{} }
   {
+    \tl_set:Nn \l__QA_current_type_tl { Q }
     \str_if_empty:nF { #1 }
       {
         \str_gset:Nn \g__QA_Q_name_str { #1 }
@@ -746,7 +797,7 @@
       \begin{QA-entry}
         \str_if_in:NnT \l__QA_theme_str { ChatGPT }
           { \parskip=2\parskip }
-        \item[\hfill\color{QA-Q-text!33!QA-Q-back}\l_QA_logo_code_Q_tl]
+        \item[\hfill\color{QA-Q-text!33!QA-Q-back}\l_QA_Q_logo_code_tl]
         \str_case:NnT \l__QA_theme_str
           {
             { ChatGPT-dark  } {}
@@ -767,6 +818,7 @@
 \str_new:N \g__QA_A_name_str
 \NewDocumentEnvironment { QA_A } { D<>{} }
   {
+    \tl_set:Nn \l__QA_current_type_tl { A }
     \str_if_empty:nF { #1 }
       {
         \str_gset:Nn \g__QA_A_name_str { #1 }
@@ -789,7 +841,7 @@
       \begin{QA-entry}
         \str_if_in:NnT \l__QA_theme_str { ChatGPT }
           { \parskip=2\parskip }
-        \item[\hfill\color{QA-A-text!33!QA-A-back}\l_QA_logo_code_A_tl]
+        \item[\hfill\color{QA-A-text!33!QA-A-back}\l_QA_A_logo_code_tl]
         \str_case:NnT \l__QA_theme_str
           {
             { ChatGPT-dark  } {}
@@ -808,6 +860,7 @@
   }
 \NewDocumentEnvironment { QA_N } { D<>{} }
   {
+    \tl_set:Nn \l__QA_current_type_tl { N }
     \colorlet{paper}{QA-N-back}
     \colorlet{main-text}{QA-N-text}
     \colorlet{emph-text}{QA-N-emph}
@@ -844,12 +897,13 @@
 
     \RenewDocumentEnvironment { QA_A } { D<>{} }
       {
+        \tl_set:Nn \l__QA_current_type_tl { A }
         \str_if_empty:nF { #1 }
           {
             \str_gset:Nn \g__QA_A_name_str { #1 }
           }
         \color{QA-A-text}
-        \vspace{1em}
+        \vspace*{1em}
         \str_if_in:NnT \l__QA_theme_str { ChatGPT }
           { \vspace{.5em} }
         \str_if_in:NnT \l__QA_theme_str { ChatGPT-classical }
@@ -864,7 +918,7 @@
         \begin{QA-entry}[leftmargin=.5mm, itemindent=0pt, labelsep=\l_QA_list_labelsep_dim, labelwidth=3em]
           \str_if_in:NnT \l__QA_theme_str { ChatGPT }
             { \parskip=2\parskip }
-          \item[\hfill\color{QA-A-text!33!QA-A-back}\l_QA_logo_code_A_tl]
+          \item[\hfill\color{QA-A-text!33!QA-A-back}\l_QA_A_logo_code_tl]
           \str_case:NnT \l__QA_theme_str
             {
               { ChatGPT-dark  } {}
@@ -889,13 +943,13 @@
 
 \NewDocumentCommand \QASetLogoCode { O{void} m }
   {
-    \tl_set:cn { l_QA_logo_code_ #1 _tl } { #2 }
+    \tl_set:cn { l_QA_ #1 _logo_code_tl } { #2 }
   }
 \NewCommandCopy \SetLogoCode \QASetLogoCode
 
 % Set default logo code
-\SetLogoCode[Q]{\textbf{\l_QA_label_Q_tl}}
-\SetLogoCode[A]{\textbf{\l_QA_label_R_tl}}
+\SetLogoCode[Q]{\textbf{\l_QA_Q_label_tl}}
+\SetLogoCode[A]{\textbf{\l_QA_A_label_tl}}
 
 \newcounter{QA_Q}
 \newcounter{QA_A}
@@ -928,8 +982,8 @@
   }
 \NewDocumentCommand \QAShowCounter { m }
   {
-    \stepcounter{QA_#1}
-    \QA_show_subcounter_with_style:n { \tl_use:c {theQA_#1} }
+    \refstepcounter{QA_#1}
+    \QA_show_subcounter_with_style:n { \cs_if_exist_use:c {theQA_#1} }
   }
 
 \newcounter{QA_Q_aux}
@@ -1032,70 +1086,98 @@
 \bool_if:NT \l__QA_multiple_question_bool { \EnableMultipleQuestion }
 \bool_if:NT \l__QA_multiple_answer_bool   { \EnableMultipleAnswer   }
 
+\projlib_langauge_define_multilingual_text:Nn \l_QA_Q_label_text_tl
+  {
+    , EN = { Q }
+    , FR = { Q }
+    , DE = { F }
+    , IT = { D }
+    , PT = { P }
+    , BR = { P }
+    , ES = { P }
+    , CN = { 问 }
+    , TC = { 問 }
+    , JP = { Q }
+    , RU = { B }
+  }
 \bool_if:NTF \l__QA_numbered_question_bool
   {
-    \projlib_langauge_define_multilingual_text:Nn \l_QA_label_Q_tl
+    \projlib_langauge_define_multilingual_text:Nn \l_QA_Q_label_tl
       {
-        , EN = { Q \QAShowCounter{Q} \,: }
-        , FR = { Q \QAShowCounter{Q} :   }
-        , DE = { F \QAShowCounter{Q} \,: }
-        , IT = { D \QAShowCounter{Q} \,: }
-        , PT = { P \QAShowCounter{Q} \,: }
-        , BR = { P \QAShowCounter{Q} \,: }
-        , ES = { P \QAShowCounter{Q} \,: }
-        , CN = { 问 \QAShowCounter{Q} \,：\hspace{-.5em} }
-        , TC = { 問 \QAShowCounter{Q} \,：\hspace{-.5em} }
-        , JP = { Q \QAShowCounter{Q} \,: }
-        , RU = { B \QAShowCounter{Q} \,: }
+        , EN = { \l_QA_Q_label_text_tl \QAShowCounter{Q} \,: }
+        , FR = { \l_QA_Q_label_text_tl \QAShowCounter{Q} :   }
+        , DE = { \l_QA_Q_label_text_tl \QAShowCounter{Q} \,: }
+        , IT = { \l_QA_Q_label_text_tl \QAShowCounter{Q} \,: }
+        , PT = { \l_QA_Q_label_text_tl \QAShowCounter{Q} \,: }
+        , BR = { \l_QA_Q_label_text_tl \QAShowCounter{Q} \,: }
+        , ES = { \l_QA_Q_label_text_tl \QAShowCounter{Q} \,: }
+        , CN = { \l_QA_Q_label_text_tl \, \QAShowCounter{Q} \,：\hspace{-.5em} }
+        , TC = { \l_QA_Q_label_text_tl \, \QAShowCounter{Q} \,：\hspace{-.5em} }
+        , JP = { \l_QA_Q_label_text_tl \QAShowCounter{Q} \,: }
+        , RU = { \l_QA_Q_label_text_tl \QAShowCounter{Q} \,: }
       }
   }
   {
-    \projlib_langauge_define_multilingual_text:Nn \l_QA_label_Q_tl
+    \projlib_langauge_define_multilingual_text:Nn \l_QA_Q_label_tl
       {
-        , EN = { Q\,: }
-        , FR = { Q:   }
-        , DE = { F\,: }
-        , IT = { D\,: }
-        , PT = { P\,: }
-        , BR = { P\,: }
-        , ES = { P\,: }
-        , CN = { 问\,：\hspace{-.33em} }
-        , TC = { 問\,：\hspace{-.33em} }
-        , JP = { Q\,: }
-        , RU = { B\,: }
+        , EN = { \l_QA_Q_label_text_tl \,: }
+        , FR = { \l_QA_Q_label_text_tl :   }
+        , DE = { \l_QA_Q_label_text_tl \,: }
+        , IT = { \l_QA_Q_label_text_tl \,: }
+        , PT = { \l_QA_Q_label_text_tl \,: }
+        , BR = { \l_QA_Q_label_text_tl \,: }
+        , ES = { \l_QA_Q_label_text_tl \,: }
+        , CN = { \l_QA_Q_label_text_tl \,：\hspace{-.33em} }
+        , TC = { \l_QA_Q_label_text_tl \,：\hspace{-.33em} }
+        , JP = { \l_QA_Q_label_text_tl \,: }
+        , RU = { \l_QA_Q_label_text_tl \,: }
       }
+  }
+\projlib_langauge_define_multilingual_text:Nn \l_QA_A_label_text_tl
+  {
+    , EN = { A }
+    , FR = { R }
+    , DE = { A }
+    , IT = { R }
+    , PT = { R }
+    , BR = { R }
+    , ES = { R }
+    , CN = { 答 }
+    , TC = { 答 }
+    , JP = { A }
+    , RU = { O }
   }
 \bool_if:NTF \l__QA_numbered_answer_bool
   {
-    \projlib_langauge_define_multilingual_text:Nn \l_QA_label_R_tl
+    \projlib_langauge_define_multilingual_text:Nn \l_QA_A_label_tl
       {
-        , EN = { A \QAShowCounter{A} \,: }
-        , FR = { R \QAShowCounter{A} :   }
-        , DE = { A \QAShowCounter{A} \,: }
-        , IT = { R \QAShowCounter{A} \,: }
-        , PT = { R \QAShowCounter{A} \,: }
-        , BR = { R \QAShowCounter{A} \,: }
-        , ES = { R \QAShowCounter{A} \,: }
-        , CN = { 答 \QAShowCounter{A} \,：\hspace{-.5em} }
-        , TC = { 答 \QAShowCounter{A} \,：\hspace{-.5em} }
-        , JP = { A \QAShowCounter{A} \,: }
-        , RU = { O \QAShowCounter{A} \,: }
+        , EN = { \l_QA_A_label_text_tl \QAShowCounter{A} \,: }
+        , FR = { \l_QA_A_label_text_tl \QAShowCounter{A} :   }
+        , DE = { \l_QA_A_label_text_tl \QAShowCounter{A} \,: }
+        , IT = { \l_QA_A_label_text_tl \QAShowCounter{A} \,: }
+        , PT = { \l_QA_A_label_text_tl \QAShowCounter{A} \,: }
+        , BR = { \l_QA_A_label_text_tl \QAShowCounter{A} \,: }
+        , ES = { \l_QA_A_label_text_tl \QAShowCounter{A} \,: }
+        , CN = { \l_QA_A_label_text_tl \, \QAShowCounter{A} \,：\hspace{-.5em} }
+        , TC = { \l_QA_A_label_text_tl \, \QAShowCounter{A} \,：\hspace{-.5em} }
+        , JP = { \l_QA_A_label_text_tl \QAShowCounter{A} \,: }
+        , RU = { \l_QA_A_label_text_tl \QAShowCounter{A} \,: }
       }
   }
   {
-    \projlib_langauge_define_multilingual_text:Nn \l_QA_label_R_tl
+    \projlib_langauge_define_multilingual_text:Nn \l_QA_A_label_tl
       {
-        , EN = { A\,: }
-        , FR = { R:   }
-        , DE = { A\,: }
-        , IT = { R\,: }
-        , PT = { R\,: }
-        , BR = { R\,: }
-        , ES = { R\,: }
-        , CN = { 答\,：\hspace{-.33em} }
-        , TC = { 答\,：\hspace{-.33em} }
-        , JP = { A\,: }
-        , RU = { O\,: }
+        , EN = { \l_QA_A_label_text_tl \,: }
+        , FR = { \l_QA_A_label_text_tl :   }
+        , DE = { \l_QA_A_label_text_tl \,: }
+        , IT = { \l_QA_A_label_text_tl \,: }
+        , PT = { \l_QA_A_label_text_tl \,: }
+        , BR = { \l_QA_A_label_text_tl \,: }
+        , ES = { \l_QA_A_label_text_tl \,: }
+        , CN = { \l_QA_A_label_text_tl \,：\hspace{-.33em} }
+        , TC = { \l_QA_A_label_text_tl \,：\hspace{-.33em} }
+        , JP = { \l_QA_A_label_text_tl \,: }
+        , RU = { \l_QA_A_label_text_tl \,: }
       }
   }
 
@@ -1308,7 +1390,7 @@
         \seq_map_inline:Nn \l_tmpa_seq
           {
             \tl_put_right:Nn \l_QA_tmp_tl
-              { \QACompactCenterText { ####1 } }
+              { \QACaption { ####1 } }
           }
 
         \regex_replace_all:nnN
@@ -1438,7 +1520,6 @@
     \tl_gput_right:Nn #1 { \QAendmark }
   }
 
-\box_new:N \l__QA_tmp_box
 \cs_new:Nn \__QA_put_current_content:n
   {
     \tl_if_empty:NF \g_QA_current_content_tl
