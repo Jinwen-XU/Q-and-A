@@ -8,6 +8,16 @@
 
 Notably, it features two themes, `ChatGPT-light` and `ChatGPT-dark`, enabling you to format your Q&A dialog in a way that closely resembles the interface of ChatGPT.
 
+![image](https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-default.png)
+
+![image](https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-ChatGPT-1.png)
+
+![image](https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-ChatGPT-classical-1.png)
+
+![image](https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-default-1.png)
+
+![image](https://github.com/Jinwen-XU/Q-and-A/raw/main/screenshots/screenshot-multiple-1.png)
+
 ## Installation and preparation
 
 ### How to install this package
@@ -15,6 +25,9 @@ Notably, it features two themes, `ChatGPT-light` and `ChatGPT-dark`, enabling yo
 If you are using TeX Live 2024 or newer, or the most recent version of MikTeX, then this package should already be included, and you don't need to do anything.
 
 Otherwise, you need to check for package update to see if you can receive it. In case not, you can always go to [the CTAN page](https://ctan.org/pkg/Q-and-A) to download the `.zip` file with all related files included.
+
+> **Attention:**
+> For this document class to function properly, the LaTeX2e kernel must be at least as new as `2023/11/01`.
 
 ## Usage
 
@@ -43,17 +56,19 @@ If you are using XeLaTeX or LuaLaTeX to compile your document, then the current 
 
 These are necessary if you wish to write your document in Chinese (either simplified or traditional) or Japanese. Also, without these fonts installed, the compilation speed might be much slower — the compilation would still pass, but the system shall spend (quite) some time verifying that the fonts are indeed missing before switching to the fallback fonts.
 
-### Functionality
+### Some aspects
+
+#### On the functionality
 The main features are achieved with the power of LaTeX3's regex functionality. It scans the content paragraph by paragraph and converts recognized patterns into corresponding TeX commands.
 However, this comes with a price: in order to scan the content, it is firstly stored in a macro, and that means that you cannot use commands like `\verb` in your main text.
 Also, synctex won't work properly.
 
-### Language and date format
+#### Language and date format
 Language and date format can both be set in two ways: as class option or with corresponding commands.
 - The user-level command for setting language is `\UseLanguage`, provided by `projlib-language`; the one for setting date format is `\SetDatetimeInputFormat`, provided by `projlib-date`.
 - When you set the language, it is not exactly the same using class option or using command: when you select a language via class option, only the setting for this language would be loaded; however, with `\UseLanguage`, it would load *all* the language settings and then switch to your selected one. Sometimes the page breaking behavior differs slightly. Personally I prefer the `\UseLanguage` approach, for this would allow you to switch language in the middle of your document.
 
-### Scroll mode
+#### Scroll mode
 The scroll mode is achieved by directly accessing `\pdfpageheight` (pdfTeX and XeTeX) or `\pageheight` (LuaTeX). <!-- The minimal page height is set to be `10in`. --> It is worth noting that in order to calculate the height needed, the entire content are put into a single box, which puts a limitation on the length of your document (but this usually wouldn't be a problem).
 
 # License
