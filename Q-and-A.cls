@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2023/11/01]
 \ProvidesExplClass
   {Q-and-A}
-  {2023/11/21} {}
+  {2023/12/19} {}
   {Document class for typesetting Q&A conversation}
 
 \keys_define:nn { Q-and-A }
@@ -138,6 +138,7 @@
 
 \str_if_eq:onT { \l__QA_theme_str } { ChatGPT-dark }
   {
+    \definecolor{QA-code-title-back}{RGB}{ 32, 33, 35}
     \definecolor{QA-Q-back}{RGB}{ 52, 53, 65}
     \definecolor{QA-Q-text}{RGB}{236,236,241}
     \definecolor{QA-Q-emph}{RGB}{255,255,255}
@@ -864,7 +865,7 @@
     \colorlet{paper}{QA-N-back}
     \colorlet{main-text}{QA-N-text}
     \colorlet{emph-text}{QA-N-emph}
-    \str_if_in:NnT \l__QA_theme_str { ChatGPT }
+    \str_if_in:NnT \l__QA_theme_str { ChatGPT-classical }
       {
         \colorlet{QA-code-title-back}{QA-A-back}
         \colorlet{QA-code-title-text}{QA-A-text}
