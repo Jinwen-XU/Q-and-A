@@ -5,7 +5,7 @@
   scroll,
 ]{Q-and-A}
 
-\def\PackageVersion{2023/11/21}
+\def\PackageVersion{2023/12/19}
 \def\PackageSubVersion{}
 
 \newcommand{\QApackage}{{\normalfont\textsf{Q-and-A}}}
@@ -212,7 +212,7 @@
     \item Likewise, a `section`/`subsection`/`subsubsection` should be placed in a separate paragraph.
     \item Input or inclusion of files should also be operated in a separate paragraph.
     \item For emphasizing and bolding the text, it would be necessary to separate the asterisks with~`\{\}` in some special cases: `\textasterisk\textasterisk like\textasterisk\textasterisk\{\}\textasterisk\textasterisk\textasterisk this\textasterisk\textasterisk\textasterisk\{\}\textasterisk one\textasterisk`.
-    \item Due to the recognition of the syntax, you cannot directly use characters like `\textasterisk` as usual, especially in math mode. You should consider using an alternative macro, such as `\textbackslash ast` for `\textasterisk` in math mode, or define a command version of the character in the preamble, such as `\textbackslash textasterisk` for `\textasterisk`. A list of predefined commands are:
+    \item Due to the recognition of the syntax, you may not be able to directly write characters like `\textasterisk` as usual. You should consider using a command version of the character, such as `\textbackslash textasterisk` for `\textasterisk`. A list of predefined commands are:
     \begin{itemize}
       \item `\textbackslash textasterisk` for `\textasterisk`;
       \item `\textbackslash textbacktick` for `\textbacktick`;
@@ -291,7 +291,8 @@
     \item Currently, the code highlight is done by the package `listings`. Due to its own limitations, the result is still far from satisfactory. Using `minted` instead could improve the situation, but this would require `-shell-escape` and some external tweaking, thus it would still take some effort to make it work with the current document class.
     \item Due to the current implementation, one cannot direct write code (either inline or displayed) within the text (alternative solution has been proposed above).
     \item Due to the current implementation, when displaying the code, one may not be able to write some of the language name like `C\#` directly, but has to write an alternative name such as `csharp`.
-    \item Due to the current implementation, one may not be able to directly write certain characters (such as `\textasterisk`) in the text, this might be especially inconvenient in math mode (temporary alternative solution has been proposed above).
+    % \item Due to the current implementation, one may not be able to directly write certain characters (such as `\textasterisk`) in the text, this might be especially inconvenient in math mode (temporary alternative solution has been proposed above).
+    %% 2023-12-19, solved with some internal improvements
     \item Due to the current implementation, the method for inputting and including subfiles doesn't really work like `\textbackslash input` and `\textbackslash include`. In particular, the current type of conversation would be reset, this might cause some confusion in certain cases.
     % \item The code block containing long piece of code usually won't properly break across the page (which is essentially why this documentation and the demo documents enabled the `scroll` mode).
     %% 2023-11-05, solved with the new option "answer outside the box".

@@ -1302,6 +1302,27 @@
 \tl_new:N \l_QA_tmp_tl
 \tl_new:N \g_QA_current_content_tl
 \cs_generate_variant:Nn \regex_split:nnN { nVN }
+% https://tex.stackexchange.com/a/703640
+\cs_new:Nn \QA_regex_replace_case_once_skip_math:nN
+  {
+    \regex_replace_case_once:nN
+      {
+        { \$ (.*?) \$ } { \0 }
+        { \c{\(} (.*?) \c{\)} } { \0 }
+        { \c{\[} (.*?) \c{\]} } { \0 }
+        #1
+      } #2
+  }
+\cs_new:Nn \QA_regex_replace_case_all_skip_math:nN
+  {
+    \regex_replace_case_all:nN
+      {
+        { \$ (.*?) \$ } { \0 }
+        { \c{\(} (.*?) \c{\)} } { \0 }
+        { \c{\[} (.*?) \c{\]} } { \0 }
+        #1
+      } #2
+  }
 \cs_new:Nn \QA_parse_content:N
   {
     \tl_set:Nn \l__QA_current_type_tl { void }
@@ -1394,18 +1415,24 @@
               { \QACaption { ####1 } }
           }
 
-        \regex_replace_all:nnN
-          { \|\| }
-          { \c{QAShowImageCenter} }
-          \l_QA_tmp_tl
-        \regex_replace_all:nnN
-          { \(\( }
-          { \c{QAShowImageLeft} }
-          \l_QA_tmp_tl
-        \regex_replace_all:nnN
-          { \)\) }
-          { \c{QAShowImageRight} }
-          \l_QA_tmp_tl
+        % \regex_replace_all:nnN
+        %   { \|\| }
+        %   { \c{QAShowImageCenter} }
+        %   \l_QA_tmp_tl
+        % \regex_replace_all:nnN
+        %   { \(\( }
+        %   { \c{QAShowImageLeft} }
+        %   \l_QA_tmp_tl
+        % \regex_replace_all:nnN
+        %   { \)\) }
+        %   { \c{QAShowImageRight} }
+        %   \l_QA_tmp_tl
+        \QA_regex_replace_case_all_skip_math:nN
+          {
+            { \|\| } { \c{QAShowImageCenter} }
+            { \(\( } { \c{QAShowImageLeft} }
+            { \)\) } { \c{QAShowImageRight} }
+          } \l_QA_tmp_tl
 
         \bool_set_false:N \l_QA_regex_no_more_match_bool
         \bool_do_until:nn \l_QA_regex_no_more_match_bool
@@ -1496,18 +1523,24 @@
           { \c{QAEnum} \2 {\1} {\3} }
           \l_QA_tmp_tl
 
-        \regex_replace_all:nnN
-          { \*\*\* (.*?) \*\*\* }
-          { \c{QAEmph} { \c{emph} {\1} } }
-          \l_QA_tmp_tl
-        \regex_replace_all:nnN
-          { \*\* (.*?) \*\* }
-          { \c{QAEmph} {\1} }
-          \l_QA_tmp_tl
-        \regex_replace_all:nnN
-          { \* (.*?) \* }
-          { \c{emph} {\1} }
-          \l_QA_tmp_tl
+        % \regex_replace_all:nnN
+        %   { \*\*\* (.*?) \*\*\* }
+        %   { \c{QAEmph} { \c{emph} {\1} } }
+        %   \l_QA_tmp_tl
+        % \regex_replace_all:nnN
+        %   { \*\* (.*?) \*\* }
+        %   { \c{QAEmph} {\1} }
+        %   \l_QA_tmp_tl
+        % \regex_replace_all:nnN
+        %   { \* (.*?) \* }
+        %   { \c{emph} {\1} }
+        %   \l_QA_tmp_tl
+        \QA_regex_replace_case_all_skip_math:nN
+          {
+            { \*\*\* (.*?) \*\*\* } { \c{QAEmph} { \c{emph} { \1 } } }
+            { \*\* (.*?) \*\* } { \c{QAEmph} { \1 } }
+            { \* (.*?) \* } { \c{emph} { \1 } }
+          } \l_QA_tmp_tl
 
         \regex_replace_once:nnN { ❄️ } { } \l_QA_tmp_tl
 
