@@ -1,12 +1,14 @@
 <!-- Copyright (C) 2023 by Jinwen XU -->
 
-# `Q-and-A` — Typesetting Q\&A-style conversation made easier
+# `Q-and-A` — Typesetting Q&A-style conversation made easier
 
 ## Introduction
 
 `Q-and-A` is a LaTeX document class for you to typeset Q&A-style conversation. It turns simple pure text Q&A dialog into carefully designed document.
 
 Notably, it features two themes, `ChatGPT-light` and `ChatGPT-dark`, enabling you to format your Q&A dialog in a way that closely resembles the interface of ChatGPT.
+
+> Package dependencies: [`enumitem`](https://ctan.org/pkg/enumitem), [*`einfart`*](https://ctan.org/pkg/minimalist), [*`listings`*](https://ctan.org/pkg/listings), [`minimalist`](https://ctan.org/pkg/minimalist), [`projlib`](https://ctan.org/pkg/projlib), [`tcolorbox`](https://ctan.org/pkg/tcolorbox).
 
 ### Screenshots
 
